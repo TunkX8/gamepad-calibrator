@@ -1,0 +1,189 @@
+/* style.css */
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
+  color: #f0f0f0;
+}
+
+.wrap {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  font-size: 2.2em;
+  background: linear-gradient(90deg, #6b5bff, #00ff88);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+header p.lead {
+  font-size: 1.1em;
+  color: #ccc;
+}
+
+.top-actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+  text-decoration: none;
+  color: #fff;
+  background: #444;
+}
+
+.btn:hover {
+  background: #666;
+}
+
+.btn.donate {
+  background: linear-gradient(90deg, #6b5bff, #00ff88);
+}
+
+.btn.repo {
+  background: #555;
+}
+
+main .card {
+  background: #111;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+}
+
+.hidden {
+  display: none;
+}
+
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.panel {
+  flex: 1;
+  min-width: 280px;
+}
+
+.sticks {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.axis-list {
+  font-size: 0.9em;
+  color: #ccc;
+}
+
+#buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 50px);
+  grid-gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+#buttons-grid div {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  background: #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #fff;
+  transition: 0.2s;
+}
+
+#buttons-grid div.active {
+  background: #00ff88;
+  color: #000;
+}
+
+.actions {
+  margin-top: 15px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.cal-block h4 {
+  margin-bottom: 5px;
+  font-size: 1em;
+}
+
+input[type="range"] {
+  width: 100%;
+}
+
+.small {
+  font-size: 0.85em;
+  color: #aaa;
+  margin-bottom: 5px;
+}
+
+.cal-actions {
+  margin-top: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.input {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background: #222;
+  color: #fff;
+}
+
+.preview {
+  background: #222;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 0.85em;
+  overflow-x: auto;
+  max-height: 200px;
+}
+
+.battery {
+  margin-top: 15px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #00ff88;
+}
+
+footer.muted {
+  text-align: center;
+  font-size: 0.85em;
+  color: #777;
+  margin-top: 20px;
+}

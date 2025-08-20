@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🎮 Gamepad Calibrator — TunkX8</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>🎮 Gamepad Calibrator</h1>
+      <p class="lead">Calibre PS5 / Xbox direto no navegador — ajuste deadzone, curva e exporte perfis.</p>
+      <div class="top-actions">
+        <!-- PayPal -->
+        <a class="btn donate" href="https://www.paypal.com/donate/?hosted_button_id=KCEK7FJ3H36TL" target="_blank" rel="noreferrer">💖 Apoiar (PayPal)</a>
+        <a class="btn repo" href="https://github.com/TunkX8/gamepad-calibrator" target="_blank" rel="noreferrer">📦 Repositório</a>
+      </div>
+    </header>
+
+    <main>
+      <section id="status" class="card">
+        <h2>Status</h2>
+        <p id="gp-status">Nenhum controle detectado. Conecte por USB/Bluetooth e aperte um botão no controle.</p>
+      </section>
+
+      <section id="controls" class="card hidden">
+        <h2>Controle: <span id="gp-name"></span></h2>
+
+        <div class="flex">
+          <div class="panel">
+            <h3>Sticks</h3>
+            <div class="sticks">
+              <canvas id="stick-left" width="160" height="160"></canvas>
+              <canvas id="stick-right" width="160" height="160"></canvas>
+            </div>
+            <div class="axis-list">
+              <div>LS X: <span id="lsx">0.000</span></div>
+              <div>LS Y: <span id="lsy">0.000</span></div>
+              <div>RS X: <span id="rsx">0.000</span></div>
+              <div>RS Y: <span id="rsy">0.000</span></div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h3>Botões</h3>
+            <div id="buttons-grid"></div>
+
+            <h3>Gatilhos</h3>
+            <div>LT: <span id="lt">0.00</span></div>
+            <div>RT: <span id="rt">0.00</span></div>
+
+            <div class="actions">
+              <button id="rumbleBtn" class="btn">🔊 Testar Vibração</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="battery">
+          <h4>Nível da bateria: <span id="battery-level">-</span></h4>
+        </div>
+      </section>
+
+      <section id="calibration" class="card hidden">
+        <h2>Calibração</h2>
+
+        <div class="grid">
+          <div class="cal-block">
+            <h4>Deadzone LS</h4>
+            <input id="dead-ls" type="range" min="0" max="0.4" step="0.005" value="0.08">
+            <div class="small">Valor: <span id="dead-ls-val">0.080</span></div>
+            <button class="btn" id="detect-ls">Detectar deadzone (solte o stick)</button>
+          </div>
+
+          <div class="cal-block">
+            <h4>Deadzone RS</h4>
+            <input id="dead-rs" type="range" min="0" max="0.4" step="0.005" value="0.08">
+            <div class="small">Valor: <span id="dead-rs-val">0.080</span></div>
+            <button class="btn" id="detect-rs">Detectar deadzone (solte o stick)</button>
+          </div>
+
+          <div class="cal-block">
+            <h4>Curva (sensibilidade)</h4>
+            <input id="curve" type="range" min="0.4" max="3" step="0.05" value="1">
+            <div class="small">Valor: <span id="curve-val">1.00</span></div>
+          </div>
+
+          <div class="cal-block">
+            <h4>Anti-deadzone</h4>
+            <input id="antidz" type="range" min="0" max="0.4" step="0.005" value="0">
+            <div class="small">Valor: <span id="antidz-val">0.000</span></div>
+          </div>
+        </div>
+
+        <div class="cal-actions">
+          <input id="profile-name" class="input" placeholder="Nome do perfil (ex: DualSense_Default)">
+          <button id="exportBtn" class="btn primary">⬇️ Exportar Perfil (.json)</button>
+          <input id="importFile" type="file" accept="application/json" style="display:none">
+          <button id="importBtn" class="btn">⬆️ Importar Perfil</button>
+          <button id="saveLocal" class="btn">💾 Salvar local (localStorage)</button>
+        </div>
+
+        <pre id="preview" class="preview"></pre>
+      </section>
+
+      <footer class="muted">
+        Dica: Aperte um botão no controle para o navegador permitir leitura. Recomendado: Chrome / Edge.
+      </footer>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

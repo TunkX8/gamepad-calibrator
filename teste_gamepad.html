@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Teste Gamepad</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background:#111; color:#eee; padding:20px; }
+    .ok { color:#00ff88; font-weight:700 }
+    .err{ color:#ff5b5b; font-weight:700 }
+    .box{ background:#1b1b1b; border-radius:10px; padding:16px; margin-top:12px }
+    .btn{ background:#00ff88; color:#000; border:none; border-radius:8px; padding:10px 14px; font-weight:700; cursor:pointer }
+  </style>
+</head>
+<body>
+  <h1>Teste rápido — Gamepad API</h1>
+  <p>Conecte o controle por USB/Bluetooth e <strong>aperte qualquer botão</strong>.</p>
+  <div class="box">
+    <div>Status: <span id="status">Aguardando…</span></div>
+    <div>Nome: <span id="name">-</span></div>
+    <div>Botões pressionados: <span id="buttons">0</span></div>
+    <div>Axes (x,y): <span id="axes">-</span></div>
+  </div>
+  <p style="margin-top:12px">Teste de vibração: <button id="rumble" class="btn">Vibrar 300ms</button></p>
+
+  <script>
+    const st = s => document.getElementById(s);
+    const statusEl = st('status');
+    const nameEl   = st('name');
+    const btnEl    = st('buttons');
+    const axesEl   = st('axes');
+    const rumble   = st('rumble');
+
+    let gp = null, raf = null;
+
+    function loop(){
+      const pads = navigator.getGamepads?.() || [];
+      gp = pads.find(Boolean);
+      if(!gp){ cancelAnimationFrame(raf); return; }
+
+      const pressed = gp.buttons.filter(b=>b?.pressed).length;
+      const axes    = gp.axes?.length ? gp.axes.map(v=>v.toFixed(2)).join(', ') : '-';
+
+      btnEl.textContent  = pressed;
+      axesEl.textContent = axes;
+
+      raf = requestAnimationFrame(loop);
+    }
+
+    window.addEventListener('gamepadconnected', (e)=>{
+      gp = e.gamepad;
+      statusEl.innerHTML = '<span class="ok">Conectado</span>';
+      nameEl.textContent = gp.id;
+      loop();
+    });
+
+    window.addEventListener('gamepaddisconnected', ()=>{
+      statusEl.innerHTML = '<span class="err">Desconectado</span>';
+      nameEl.textContent = '-';
+      btnEl.textContent  = '0';
+      axesEl.textContent = '-';
+      cancelAnimationFrame(raf);
+    });
+
+    rumble.addEventListener('click', ()=>{
+      const pads = navigator.getGamepads?.() || [];
+      const g = pads.find(Boolean);
+      const act = g?.vibrationActuator;
+      if(act?.playEffect){
+        act.playEffect('dual-rumble', { duration:300, weakMagnitude:1.0, strongMagnitude:1.0 })
+           .catch(()=>alert('Vibração não suportada neste navegador/controle.'));
+      } else {
+        alert('Vibração não suportada neste navegador/controle.');
+      }
+    });
+
+    // Dica: alguns navegadores só reportam após um botão ser pressionado
+    window.addEventListener('keydown', ()=>loop(), { once:true });
+  </script>
+</body>
+</html>
