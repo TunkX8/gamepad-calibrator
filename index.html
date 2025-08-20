@@ -1,57 +1,64 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Calibrador de Controle</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calibrador de Controle - TunkX8</title>
   <link rel="stylesheet" href="style.css">
-  <script defer src="script.js"></script>
 </head>
 <body>
+  <!-- Header fixo com doação -->
   <header>
-    <h1>Calibrador de Controle</h1>
-    <p id="status">Status: <span class="err">Desconectado</span></p>
+    <h1>🎮 Calibrador de Controle</h1>
+    <a href="https://www.paypal.com/donate" target="_blank" class="donate-btn">💖 Apoie o Projeto</a>
   </header>
 
+  <!-- Status -->
+  <section id="status">
+    <p>Status: <span id="connection-status">Aguardando controle...</span></p>
+    <p>Bateria: <span id="battery-level">--%</span></p>
+  </section>
+
+  <!-- Grid principal -->
   <main>
-    <section id="info">
-      <h2>Informações</h2>
-      <p><strong>Nome:</strong> <span id="gp-name">-</span></p>
-      <p><strong>Bateria:</strong> <span id="gp-battery">-</span></p>
-    </section>
-
-    <section id="visual">
+    <!-- Visual dos botões -->
+    <section class="controller">
       <h2>Botões</h2>
-      <div id="buttons"></div>
-      <h2>Sticks</h2>
-      <div id="sticks">
-        <canvas id="stick-left" width="150" height="150"></canvas>
-        <canvas id="stick-right" width="150" height="150"></canvas>
-      </div>
-      <h2>D-Pad</h2>
-      <div id="dpad">
-        <div class="dpad-row"><div id="dpad-up" class="dpad-btn">▲</div></div>
-        <div class="dpad-row">
-          <div id="dpad-left" class="dpad-btn">◀</div>
-          <div id="dpad-down" class="dpad-btn">▼</div>
-          <div id="dpad-right" class="dpad-btn">▶</div>
-        </div>
-      </div>
+      <div class="buttons-grid" id="buttons-grid"></div>
     </section>
 
-    <section id="calibration">
+    <!-- Analógicos e D-Pad -->
+    <section class="sticks">
+      <h2>Analógicos & D-Pad</h2>
+      <canvas id="sticks-canvas" width="300" height="300"></canvas>
+    </section>
+
+    <!-- Calibração -->
+    <section class="calibration">
       <h2>Calibração</h2>
-      <label>Deadzone: <input type="range" id="deadzone" min="0" max="0.3" step="0.01" value="0.05"></label>
-      <label>Drift: <input type="range" id="drift" min="-0.2" max="0.2" step="0.01" value="0"></label>
-      <button id="save">Salvar Perfil</button>
-      <button id="load">Importar Perfil</button>
-      <button id="export">Exportar Perfil</button>
+      <label>Dead Zone:
+        <input type="range" id="deadzone" min="0" max="0.3" step="0.01" value="0.05">
+      </label>
+      <label>Drift Compensation:
+        <input type="range" id="drift" min="-0.2" max="0.2" step="0.01" value="0">
+      </label>
+    </section>
+
+    <!-- Perfis -->
+    <section class="profiles">
+      <h2>Perfis</h2>
+      <button id="save-profile">💾 Salvar</button>
+      <button id="load-profile">📂 Importar</button>
+      <button id="export-profile">📤 Exportar</button>
+      <input type="file" id="file-input" hidden>
     </section>
   </main>
 
+  <!-- Rodapé -->
   <footer>
-    <p>Projeto aberto por Leandro 🚀</p>
-    <a href="https://www.paypal.com/donate" target="_blank" class="donate">💖 Apoie no PayPal</a>
+    <p>Projeto aberto por <strong>TunkX8</strong></p>
   </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
