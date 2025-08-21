@@ -68,7 +68,7 @@ main {
   padding: 2rem;
 }
 
-/* Top buttons: L1/L2 & R1/R2 */
+/* Top buttons */
 .top-buttons {
   display: flex;
   justify-content: space-between;
@@ -96,18 +96,27 @@ main {
   box-shadow: 0 0 15px #3ae03a;
 }
 
-/* Center buttons: Share, Touch, Options, PS */
+/* Center buttons */
 .center-buttons {
   display: flex;
   justify-content: center;
-  gap: 2rem;
+  align-items: center;
+  gap: 4rem;
+  margin-top: 1rem;
+}
+
+.touch-ps {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
 }
 
 .center-buttons div {
   background: #222;
   border: 2px solid #5af2f2;
-  border-radius: 10px;
-  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  padding: 0.6rem 1.2rem;
   text-align: center;
   box-shadow: 0 0 10px #5af2f2;
   transition: 0.2s;
@@ -124,8 +133,8 @@ main {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  max-width: 600px;
-  gap: 2rem;
+  max-width: 700px;
+  gap: 5rem;
   align-items: flex-start;
 }
 
@@ -133,7 +142,7 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 1.2rem;
 }
 
 /* Canvas */
@@ -143,16 +152,16 @@ canvas {
   box-shadow: inset 0 0 20px rgba(90, 242, 242, 0.2);
 }
 
-/* Botões de ação (+ layout) */
+/* Botões de ação */
 .buttons-section {
   display: grid;
   grid-template-areas: 
     ". triangle ."
     "square . circle"
     ". cross .";
-  grid-template-columns: 50px 50px 50px;
-  grid-template-rows: 50px 50px 50px;
-  gap: 10px;
+  grid-template-columns: 60px 60px 60px;
+  grid-template-rows: 60px 60px 60px;
+  gap: 12px;
   justify-items: center;
 }
 
@@ -165,12 +174,12 @@ canvas {
   background: #222;
   border: 2px solid #5af2f2;
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   box-shadow: 0 0 10px #5af2f2;
   transition: 0.2s;
 }
@@ -181,7 +190,7 @@ canvas {
   box-shadow: 0 0 15px #3ae03a;
 }
 
-/* Calibration section */
+/* Calibration */
 .calibration {
   display: flex;
   flex-direction: column;
@@ -193,7 +202,7 @@ canvas {
   max-width: 500px;
 }
 
-/* Profiles section */
+/* Profiles */
 .profiles {
   display: flex;
   gap: 1rem;
