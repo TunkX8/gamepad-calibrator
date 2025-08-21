@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Calibrador de Controle</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
   <header>
     <h1>🎮 Calibrador de Controle</h1>
-    <a href="https://www.paypal.com/donate/?hosted_button_id=KCEK7FJ3H36TL" target="_blank" class="donate-btn">💖 Apoie o Projeto</a>
+    <a class="donate-btn" target="_blank"
+       href="https://www.paypal.com/donate/?hosted_button_id=KCEK7FJ3H36TL">💖 Apoie o Projeto</a>
   </header>
 
   <section id="status">
@@ -17,66 +18,75 @@
     <p>Bateria: <span id="battery-level">--%</span></p>
   </section>
 
-  <main>
-    <!-- Top Buttons -->
-    <div class="top-buttons">
-      <div class="left-top">
-        <div id="l1">L1</div>
-        <div id="l2">L2</div>
-      </div>
-      <div class="right-top">
-        <div id="r1">R1</div>
-        <div id="r2">R2</div>
+  <!-- GRID PRINCIPAL — 3 colunas (esq/centro/dir) x 3 linhas (topo/meio/baixo) -->
+  <main class="controller-grid">
+    <!-- Topo: L2 L1 |           | R1 R2 -->
+    <div class="top-left trigger-group">
+      <div id="l2" class="btn pill">L2</div>
+      <div id="l1" class="btn pill">L1</div>
+    </div>
+    <div class="top-right trigger-group">
+      <div id="r1" class="btn pill">R1</div>
+      <div id="r2" class="btn pill">R2</div>
+    </div>
+
+    <!-- Meio-esquerda: D-Pad em cruz -->
+    <div class="dpad" aria-label="D-Pad">
+      <div id="dpad-up"    class="btn dpad-key">▲</div>
+      <div id="dpad-left"  class="btn dpad-key">◀</div>
+      <div id="dpad-right" class="btn dpad-key">▶</div>
+      <div id="dpad-down"  class="btn dpad-key">▼</div>
+    </div>
+
+    <!-- Meio-centro: Share | Touch | Options  e abaixo: PS e Mic -->
+    <div class="center-cluster">
+      <div class="center-row">
+        <div id="share"   class="btn pill">Share</div>
+        <div class="touch-ps">
+          <div id="touch" class="btn pill">Touch</div>
+          <div id="ps"    class="btn pill small">PS</div>
+          <div id="mic"   class="btn pill small">Mic</div>
+        </div>
+        <div id="options" class="btn pill">Options</div>
       </div>
     </div>
 
-    <!-- Center Buttons -->
-    <div class="center-buttons">
-      <div id="share">Share</div>
-
-      <div class="touch-ps">
-        <div id="touch">Touch</div>
-        <div id="ps">PS</div>
-      </div>
-
-      <div id="options">Options</div>
+    <!-- Meio-direita: Botões de ação em cruz -->
+    <div class="action-cluster" aria-label="Ação">
+      <div id="btn-triangle" class="btn round">△</div>
+      <div id="btn-circle"   class="btn round">◯</div>
+      <div id="btn-cross"    class="btn round">✕</div>
+      <div id="btn-square"   class="btn round">□</div>
     </div>
 
-    <!-- Sticks e D-Pad -->
-    <div class="sticks-section">
-      <div class="dpad-left">
-        <canvas id="dpad" width="100" height="100"></canvas>
-        <canvas id="left-stick" width="150" height="150"></canvas>
-      </div>
-      <canvas id="right-stick" width="150" height="150"></canvas>
+    <!-- Baixo-esquerda: Analógico esquerdo (um pouco à direita) -->
+    <div class="stick-left">
+      <canvas id="left-stick" width="140" height="140"></canvas>
     </div>
 
-    <!-- Botões de ação -->
-    <div class="buttons-section">
-      <div id="btn-triangle">△</div>
-      <div id="btn-square">□</div>
-      <div id="btn-cross">✕</div>
-      <div id="btn-circle">◯</div>
+    <!-- Baixo-direita: Analógico direito (um pouco à esquerda) -->
+    <div class="stick-right">
+      <canvas id="right-stick" width="140" height="140"></canvas>
     </div>
-
-    <!-- Calibração -->
-    <section class="calibration">
-      <label>Dead Zone:
-        <input type="range" id="deadzone" min="0" max="0.3" step="0.01" value="0.05">
-      </label>
-      <label>Drift Compensation:
-        <input type="range" id="drift" min="-0.2" max="0.2" step="0.01" value="0">
-      </label>
-    </section>
-
-    <!-- Perfis -->
-    <section class="profiles">
-      <button id="save-profile">💾 Salvar</button>
-      <button id="load-profile">📂 Importar</button>
-      <button id="export-profile">📤 Exportar</button>
-      <input type="file" id="file-input" hidden>
-    </section>
   </main>
+
+  <!-- Calibração -->
+  <section class="calibration">
+    <label>Dead Zone:
+      <input type="range" id="deadzone" min="0" max="0.3" step="0.01" value="0.05">
+    </label>
+    <label>Drift Compensation:
+      <input type="range" id="drift" min="-0.2" max="0.2" step="0.01" value="0">
+    </label>
+  </section>
+
+  <!-- Perfis -->
+  <section class="profiles">
+    <button id="save-profile">💾 Salvar</button>
+    <button id="load-profile">📂 Importar</button>
+    <button id="export-profile">📤 Exportar</button>
+    <input type="file" id="file-input" hidden>
+  </section>
 
   <footer>
     <p>Projeto aberto por <strong>TunkX8</strong></p>
