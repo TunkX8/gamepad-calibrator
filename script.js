@@ -235,4 +235,63 @@ exportBtn.addEventListener("click", () => {
   a.href = url; a.download = "profile.json"; a.click();
   setTimeout(()=>URL.revokeObjectURL(url), 1000);
 });
+// Menu Apocalipse 2.0
+const toggleBtn = document.getElementById('toggleAdvanced');
+const advancedPanel = document.getElementById('advancedPanel');
 
+// Span para drift e deadzone
+const driftValueDisplay = document.getElementById('driftValue');
+const deadzoneValueDisplay = document.getElementById('deadzoneValue');
+
+// Sliders e select
+const sensitivitySlider = document.getElementById('sensitivitySlider');
+const triggerCurveSlider = document.getElementById('triggerCurveSlider');
+const presetProfile = document.getElementById('presetProfile');
+
+// Toggle do menu
+toggleBtn.addEventListener('click', () => {
+  const isVisible = advancedPanel.style.display === 'block';
+  advancedPanel.style.display = isVisible ? 'none' : 'block';
+  toggleBtn.textContent = isVisible ? 'Avançado' : 'Básico';
+});
+
+// Atualização em tempo real
+function updateDashboard(){
+  driftValueDisplay.textContent = drift.value;       // seu drift input existente
+  deadzoneValueDisplay.textContent = deadzone.value; // seu deadzone input existente
+  requestAnimationFrame(updateDashboard);
+}
+updateDashboard();
+
+// Sliders e select - integração com funções existentes
+sensitivitySlider.addEventListener('input', (e) => applySensitivity(e.target.value));
+triggerCurveSlider.addEventListener('input', (e) => applyTriggerCurve(e.target.value));
+presetProfile.addEventListener('change', (e) => applyPresetProfile(e.target.value));
+
+// Funções de exemplo, substitua ou integre com seu código real
+function applySensitivity(val){
+  console.log("Sensibilidade aplicada:", val);
+}
+
+function applyTriggerCurve(val){
+  console.log("Curva do gatilho aplicada:", val);
+}
+
+function applyPresetProfile(preset){
+  console.log("Perfil selecionado:", preset);
+  switch(preset){
+    case 'fps':
+      applySensitivity(8);
+      applyTriggerCurve(60);
+      break;
+    case 'racing':
+      applySensitivity(5);
+      applyTriggerCurve(30);
+      break;
+    case 'fight':
+      applySensitivity(7);
+      applyTriggerCurve(50);
+      break;
+  }
+}
+// ====== Fim do código ======
