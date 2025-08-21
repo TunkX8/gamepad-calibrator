@@ -20,10 +20,10 @@
 
   <!-- GRID PRINCIPAL — 3 colunas (esq/centro/dir) x 3 linhas (topo/meio/baixo) -->
   <main class="controller-grid">
-    <!-- Topo: L2 L1 |           | R1 R2 -->
+    <!-- Topo: L1 L2 |           | R1 R2 -->
     <div class="top-left trigger-group">
-      <div id="l2" class="btn pill">L2</div>
       <div id="l1" class="btn pill">L1</div>
+      <div id="l2" class="btn pill">L2</div>
     </div>
     <div class="top-right trigger-group">
       <div id="r1" class="btn pill">R1</div>
@@ -62,11 +62,13 @@
     <!-- Baixo-esquerda: Analógico esquerdo (um pouco à direita) -->
     <div class="stick-left">
       <canvas id="left-stick" width="140" height="140"></canvas>
+      <div id="l3" class="btn pill">L3</div>      
     </div>
 
     <!-- Baixo-direita: Analógico direito (um pouco à esquerda) -->
     <div class="stick-right">
       <canvas id="right-stick" width="140" height="140"></canvas>
+      <div id="r3" class="btn pill">R3</div>
     </div>
   </main>
 
