@@ -7,59 +7,56 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Header -->
   <header>
     <h1>🎮 Calibrador de Controle</h1>
     <a href="https://www.paypal.com/donate/?hosted_button_id=KCEK7FJ3H36TL" target="_blank" class="donate-btn">💖 Apoie o Projeto</a>
   </header>
 
-  <!-- Status -->
   <section id="status">
     <p>Status: <span id="connection-status">Aguardando controle...</span></p>
     <p>Bateria: <span id="battery-level">--%</span></p>
   </section>
 
-  <!-- Main -->
   <main>
-    <!-- Botões do controle -->
-    <section class="controller-buttons">
-      <div id="l1" class="btn">L1</div>
-      <div id="l2" class="btn">L2</div>
-      <div id="r1" class="btn">R1</div>
-      <div id="r2" class="btn">R2</div>
+    <!-- Top Buttons -->
+    <div class="top-buttons">
+      <div class="left-top">
+        <div id="l1">L1</div>
+        <div id="l2">L2</div>
+      </div>
+      <div class="right-top">
+        <div id="r1">R1</div>
+        <div id="r2">R2</div>
+      </div>
+    </div>
 
-      <div id="dpad" class="dpad-canvas-container">
+    <!-- Center Buttons -->
+    <div class="center-buttons">
+      <div id="share">Share</div>
+      <div id="touch">Touch</div>
+      <div id="options">Options</div>
+      <div id="ps">PS</div>
+    </div>
+
+    <!-- Sticks e D-Pad -->
+    <div class="sticks-section">
+      <div class="dpad-left">
         <canvas id="dpad" width="100" height="100"></canvas>
+        <canvas id="left-stick" width="150" height="150"></canvas>
       </div>
+      <canvas id="right-stick" width="150" height="150"></canvas>
+    </div>
 
-      <div id="left-stick" class="stick-canvas-container">
-        <canvas id="left-stick" width="100" height="100"></canvas>
-      </div>
-
-      <div id="share" class="btn">Share</div>
-      <div id="touch" class="btn">Touch</div>
-      <div id="options" class="btn">Options</div>
-
-      <div id="ps" class="btn">PS</div>
-
-      <div id="btn-square" class="btn">□</div>
-      <div id="btn-cross" class="btn">✕</div>
-      <div id="btn-circle" class="btn">○</div>
-      <div id="btn-triangle" class="btn">△</div>
-
-      <div id="right-stick" class="stick-canvas-container">
-        <canvas id="right-stick" width="100" height="100"></canvas>
-      </div>
-
-      <div id="dpad-up" class="hidden-btn"></div>
-      <div id="dpad-down" class="hidden-btn"></div>
-      <div id="dpad-left" class="hidden-btn"></div>
-      <div id="dpad-right" class="hidden-btn"></div>
-    </section>
+    <!-- Botões de ação -->
+    <div class="buttons-section">
+      <div id="btn-triangle">△</div>
+      <div id="btn-square">□</div>
+      <div id="btn-cross">✕</div>
+      <div id="btn-circle">◯</div>
+    </div>
 
     <!-- Calibração -->
     <section class="calibration">
-      <h2>Calibração</h2>
       <label>Dead Zone:
         <input type="range" id="deadzone" min="0" max="0.3" step="0.01" value="0.05">
       </label>
@@ -68,9 +65,15 @@
       </label>
     </section>
 
+    <!-- Perfis -->
+    <section class="profiles">
+      <button id="save-profile">💾 Salvar</button>
+      <button id="load-profile">📂 Importar</button>
+      <button id="export-profile">📤 Exportar</button>
+      <input type="file" id="file-input" hidden>
+    </section>
   </main>
 
-  <!-- Footer -->
   <footer>
     <p>Projeto aberto por <strong>TunkX8</strong></p>
   </footer>
