@@ -1,9 +1,5 @@
 /* Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin:0; padding:0; box-sizing:border-box; }
 
 body {
   font-family: 'Segoe UI', sans-serif;
@@ -28,220 +24,60 @@ header {
   box-shadow: 0 0 15px rgba(0, 255, 200, 0.3);
 }
 
-header h1 {
-  font-size: 1.5rem;
-  color: #5af2f2;
-}
+header h1 { font-size:1.5rem; color:#5af2f2; }
 
 .donate-btn {
-  background: linear-gradient(90deg, #5af2f2, #3ae03a);
-  color: #111;
-  padding: 0.6rem 1rem;
-  border-radius: 12px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: 0.3s;
+  background: linear-gradient(90deg,#5af2f2,#3ae03a);
+  color:#111;
+  padding:0.6rem 1rem;
+  border-radius:12px;
+  text-decoration:none;
+  font-weight:bold;
+  transition:0.3s;
 }
-
-.donate-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 15px #3ae03a;
-}
+.donate-btn:hover { transform:scale(1.1); box-shadow:0 0 15px #3ae03a; }
 
 /* Status */
 #status {
-  margin: 1rem;
-  padding: 0.5rem 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
-  text-align: center;
-}
-
-/* Main layout */
-main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 1200px;
-  gap: 2rem;
-  padding: 2rem;
-}
-
-/* Top buttons: L1/L2 & R1/R2 */
-.top-buttons {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.left-top, .right-top {
-  display: flex;
-  gap: 1rem;
-}
-
-.left-top div, .right-top div {
-  background: #222;
-  border: 2px solid #5af2f2;
-  border-radius: 10px;
-  padding: 0.5rem 1rem;
-  text-align: center;
-  box-shadow: 0 0 10px #5af2f2;
-  transition: 0.2s;
-}
-
-.left-top div.active, .right-top div.active {
-  background: #3ae03a;
-  color: #111;
-  box-shadow: 0 0 15px #3ae03a;
-}
-
-/* Sticks, D-Pad e botões de ação */
-.sticks-section {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 900px;
-  gap: 2rem;
-  align-items: flex-start;
-}
-
-/* Lado esquerdo: D-Pad + Analógico esquerdo */
-.left-side {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-}
-
-/* Lado direito: Analógico direito + Botões de ação */
-.right-side {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-}
-
-/* Center buttons: Share, Touch, Options, PS */
-.center-buttons {
-  display: grid;
-  grid-template-areas:
-    "share touch option"
-    ". ps .";
-  grid-template-columns: 100px 100px 100px;
-  grid-template-rows: 50px 50px;
-  gap: 1rem;
-  justify-items: center;
-  align-items: center;
-}
-
-#share { grid-area: share; }
-#touch { grid-area: touch; }
-#options { grid-area: option; }
-#ps { grid-area: ps; }
-
-.center-buttons div {
-  background: #222;
-  border: 2px solid #5af2f2;
-  border-radius: 10px;
-  padding: 0.5rem 1rem;
-  text-align: center;
-  box-shadow: 0 0 10px #5af2f2;
-  transition: 0.2s;
-}
-
-.center-buttons div.active {
-  background: #3ae03a;
-  color: #111;
-  box-shadow: 0 0 15px #3ae03a;
-}
-
-/* Canvas (sticks & D-Pad) */
-canvas {
-  background: #111;
-  border-radius: 50%;
-  box-shadow: inset 0 0 20px rgba(90, 242, 242, 0.2);
-}
-
-/* Botões de ação (+ layout) */
-.buttons-section {
-  display: grid;
-  grid-template-areas:
-    ". triangle ."
-    "square . circle"
-    ". cross .";
-  grid-template-columns: 50px 50px 50px;
-  grid-template-rows: 50px 50px 50px;
-  gap: 10px;
-}
-
-#btn-triangle { grid-area: triangle; }
-#btn-square { grid-area: square; }
-#btn-cross { grid-area: cross; }
-#btn-circle { grid-area: circle; }
-
-.buttons-section div {
-  background: #222;
-  border: 2px solid #5af2f2;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  box-shadow: 0 0 10px #5af2f2;
-  transition: 0.2s;
-}
-
-.buttons-section div.active {
-  background: #3ae03a;
-  color: #111;
-  box-shadow: 0 0 15px #3ae03a;
-}
-
-/* Calibration section */
-.calibration {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  margin:1rem;
+  padding:0.5rem 1rem;
   background: rgba(255,255,255,0.05);
-  padding: 1rem;
-  border-radius: 12px;
-  width: 100%;
-  max-width: 500px;
+  border-radius:10px;
+  text-align:center;
 }
 
-/* Profiles section */
-.profiles {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-}
+/* Main */
+main { display:flex; flex-direction:column; align-items:center; width:100%; max-width:1200px; gap:2rem; padding:2rem; }
 
-.profiles button {
-  background: #222;
-  border: 2px solid #5af2f2;
-  color: #f0f0f0;
-  padding: 0.5rem 1rem;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.2s;
-}
+/* Top buttons */
+.top-buttons { display:flex; justify-content:space-between; width:100%; }
+.left-top, .right-top { display:flex; gap:1rem; }
+.left-top div, .right-top div { background:#222; border:2px solid #5af2f2; border-radius:10px; padding:0.5rem 1rem; text-align:center; box-shadow:0 0 10px #5af2f2; transition:0.2s; }
+.left-top div.active, .right-top div.active { background:#3ae03a; color:#111; box-shadow:0 0 15px #3ae03a; }
 
-.profiles button:hover {
-  background: #3ae03a;
-  color: #111;
-  box-shadow: 0 0 15px #3ae03a;
-}
+/* Center buttons */
+.center-buttons { display:flex; justify-content:center; align-items:center; gap:2rem; flex-wrap:wrap; }
+.center-buttons div { background:#222; border:2px solid #5af2f2; border-radius:10px; padding:0.5rem 1rem; text-align:center; box-shadow:0 0 10px #5af2f2; transition:0.2s; }
+.center-buttons div.active { background:#3ae03a; color:#111; box-shadow:0 0 15px #3ae03a; }
+
+/* Sticks & D-Pad */
+.sticks-section { display:flex; justify-content:space-between; width:100%; max-width:600px; gap:2rem; align-items:flex-start; }
+.left-side { display:flex; flex-direction:column; align-items:center; gap:1rem; }
+canvas { background:#111; border-radius:50%; box-shadow:inset 0 0 20px rgba(90,242,242,0.2); }
+
+/* Buttons + layout */
+.buttons-section { display:grid; grid-template-areas: ". triangle ." "square . circle" ". cross ."; grid-template-columns:50px 50px 50px; grid-template-rows:50px 50px 50px; gap:10px; justify-items:center; }
+#btn-triangle { grid-area: triangle; } #btn-square { grid-area: square; } #btn-cross { grid-area: cross; } #btn-circle { grid-area: circle; }
+.buttons-section div { background:#222; border:2px solid #5af2f2; border-radius:50%; width:50px; height:50px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; box-shadow:0 0 10px #5af2f2; transition:0.2s; }
+.buttons-section div.active { background:#3ae03a; color:#111; box-shadow:0 0 15px #3ae03a; }
+
+/* Calibration */
+.calibration { display:flex; flex-direction:column; gap:1rem; background:rgba(255,255,255,0.05); padding:1rem; border-radius:12px; width:100%; max-width:500px; }
+
+/* Profiles */
+.profiles { display:flex; gap:1rem; justify-content:center; }
+.profiles button { background:#222; border:2px solid #5af2f2; color:#f0f0f0; padding:0.5rem 1rem; border-radius:10px; cursor:pointer; transition:0.2s; }
+.profiles button:hover { background:#3ae03a; color:#111; box-shadow:0 0 15px #3ae03a; }
 
 /* Footer */
-footer {
-  margin-top: auto;
-  padding: 1rem;
-  text-align: center;
-  background: #111;
-  width: 100%;
-  font-size: 0.9rem;
-  color: #5af2f2;
-}
+footer { margin-top:auto; padding:1rem; text-align:center; background:#111; width:100%; font-size:0.9rem; color:#5af2f2; }

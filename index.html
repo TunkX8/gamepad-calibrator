@@ -18,7 +18,7 @@
   </section>
 
   <main>
-    <!-- Top Buttons L1/L2 e R1/R2 -->
+    <!-- Top L1/L2 e R1/R2 -->
     <div class="top-buttons">
       <div class="left-top">
         <div id="l1">L1</div>
@@ -30,32 +30,31 @@
       </div>
     </div>
 
-    <!-- Sticks, D-Pad e Botões de ação -->
+    <!-- Center: Share / Touch / Options / PS -->
+    <div class="center-buttons">
+      <div id="share">Share</div>
+      <div id="touch">Touch</div>
+      <div id="options">Options</div>
+      <div id="ps">PS</div>
+    </div>
+
+    <!-- Sticks e D-Pad -->
     <div class="sticks-section">
-      <!-- Lado esquerdo: D-Pad e stick -->
       <div class="left-side">
         <canvas id="dpad" width="100" height="100"></canvas>
         <canvas id="left-stick" width="120" height="120"></canvas>
       </div>
-
-      <!-- Centro: botões Share, Touch, Options, PS -->
-      <div class="center-buttons">
-        <div id="share">Share</div>
-        <div id="touch">Touch</div>
-        <div id="options">Options</div>
-        <div id="ps">PS</div>
-      </div>
-
-      <!-- Lado direito: Botões de ação e stick -->
       <div class="right-side">
-        <div class="buttons-section">
-          <div id="btn-triangle">△</div>
-          <div id="btn-square">□</div>
-          <div id="btn-cross">✕</div>
-          <div id="btn-circle">◯</div>
-        </div>
         <canvas id="right-stick" width="120" height="120"></canvas>
       </div>
+    </div>
+
+    <!-- Botões de ação (em +) -->
+    <div class="buttons-section">
+      <div id="btn-triangle">△</div>
+      <div id="btn-square">□</div>
+      <div id="btn-cross">✕</div>
+      <div id="btn-circle">◯</div>
     </div>
 
     <!-- Calibração -->
