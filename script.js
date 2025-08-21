@@ -235,3 +235,61 @@ exportBtn.addEventListener("click", () => {
   a.href = url; a.download = "profile.json"; a.click();
   setTimeout(()=>URL.revokeObjectURL(url), 1000);
 });
+// Menu Apocalipse
+const toggleBtn = document.getElementById('toggleAdvanced');
+const advancedPanel = document.getElementById('advancedPanel');
+
+toggleBtn.addEventListener('click', () => {
+  const isVisible = advancedPanel.style.display === 'block';
+  advancedPanel.style.display = isVisible ? 'none' : 'block';
+  toggleBtn.textContent = isVisible ? 'Avançado' : 'Básico';
+});
+
+// Event listeners para sliders e select
+const sensitivitySlider = document.getElementById('sensitivitySlider');
+const triggerCurveSlider = document.getElementById('triggerCurveSlider');
+const presetProfile = document.getElementById('presetProfile');
+
+// Integração com código de calibração existente
+sensitivitySlider.addEventListener('input', (e) => {
+  const value = e.target.value;
+  applySensitivity(value); // substitua ou integre com seu código
+});
+
+triggerCurveSlider.addEventListener('input', (e) => {
+  const value = e.target.value;
+  applyTriggerCurve(value); // substitua ou integre com seu código
+});
+
+presetProfile.addEventListener('change', (e) => {
+  const preset = e.target.value;
+  applyPresetProfile(preset); // aplica drift, dead zone, sensibilidade, curva
+});
+
+// Funções exemplo (substitua ou conecte com seu código real)
+function applySensitivity(val) {
+  console.log("Sensibilidade aplicada:", val);
+}
+
+function applyTriggerCurve(val) {
+  console.log("Curva do gatilho aplicada:", val);
+}
+
+function applyPresetProfile(preset) {
+  console.log("Perfil selecionado:", preset);
+  switch(preset) {
+    case 'fps':
+      applySensitivity(8);
+      applyTriggerCurve(60);
+      break;
+    case 'racing':
+      applySensitivity(5);
+      applyTriggerCurve(30);
+      break;
+    case 'fight':
+      applySensitivity(7);
+      applyTriggerCurve(50);
+      break;
+  }
+}
+

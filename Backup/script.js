@@ -73,7 +73,7 @@ function mappingFor(profile){
   // 0 A/✕, 1 B/◯, 2 X/□, 3 Y/△, 4 LB/L1, 5 RB/R1, 6 LT/L2, 7 RT/R2,
   // 8 Back/Share, 9 Start/Options, 10 L3, 11 R3, 12 Up, 13 Down, 14 Left, 15 Right, 16 Guide/PS, 17 Touch (PS)
   const base = {
-    l1:4, r1:5, l2:6, r2:7,
+    l1:4, r1:5, l2:6, r2:7, l3:10, r3:11,
     share:8, options:9, ps:16, touch:17,
     dpad:{up:12, down:13, left:14, right:15},
     actions:{ cross:0, circle:1, square:2, triangle:3 },
@@ -113,6 +113,9 @@ function updateButtons(gp, map){
   setActive("r1", pressed(gp.buttons[map.r1]));
   setActive("l2", pressed(gp.buttons[map.l2]));
   setActive("r2", pressed(gp.buttons[map.r2]));
+  // L3/R3 (botões de pressionar analógicos)
+  setActive("l3", pressed(gp.buttons[map.l3]));
+  setActive("r3", pressed(gp.buttons[map.r3]));
 
   // Centro
   setActive("share",  pressed(gp.buttons[map.share]));

@@ -95,5 +95,30 @@
   </footer>
 
   <script src="script.js"></script>
+
+  <!-- Menu Avançado Apocalipse -->
+<div id="advancedMenuContainer" style="margin-top:20px;">
+  <button id="toggleAdvanced" style="padding:10px 20px; cursor:pointer; font-weight:bold;">Avançado</button>
+
+  <div id="advancedPanel" style="display:none; margin-top:15px; padding:15px; border:2px solid #444; border-radius:10px; background-color:#222; color:#fff;">
+    
+    <!-- Sensibilidade -->
+    <label for="sensitivitySlider">Sensibilidade:</label>
+    <input type="range" id="sensitivitySlider" min="1" max="10" value="5" style="width:100%; margin-bottom:12px;">
+    
+    <!-- Curva do gatilho -->
+    <label for="triggerCurveSlider">Curva do gatilho:</label>
+    <input type="range" id="triggerCurveSlider" min="0" max="100" value="50" style="width:100%; margin-bottom:12px;">
+
+    <!-- Perfis predefinidos -->
+    <label for="presetProfile">Perfil predefinido:</label>
+    <select id="presetProfile" style="width:100%; margin-bottom:12px;">
+      <option value="fps">FPS</option>
+      <option value="racing">Corrida</option>
+      <option value="fight">Luta</option>
+    </select>
+
+  </div>
+</div>
 </body>
 </html>
