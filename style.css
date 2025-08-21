@@ -96,11 +96,28 @@ main {
   box-shadow: 0 0 15px #3ae03a;
 }
 
-/* Center buttons: Share, Touch, Options, PS */
+/* Sticks, D-Pad e botões de ação */
+.sticks-section {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 800px;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.left-side, .center-buttons, .right-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Center buttons (Share, Touch, Options, PS) */
 .center-buttons {
   display: flex;
-  justify-content: center;
-  gap: 2rem;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .center-buttons div {
@@ -119,24 +136,7 @@ main {
   box-shadow: 0 0 15px #3ae03a;
 }
 
-/* Sticks & D-Pad section */
-.sticks-section {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 600px;
-  gap: 2rem;
-  align-items: flex-start;
-}
-
-.dpad-left {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-}
-
-/* Canvas */
+/* Canvas (sticks & D-Pad) */
 canvas {
   background: #111;
   border-radius: 50%;
@@ -146,14 +146,13 @@ canvas {
 /* Botões de ação (+ layout) */
 .buttons-section {
   display: grid;
-  grid-template-areas: 
+  grid-template-areas:
     ". triangle ."
     "square . circle"
     ". cross .";
   grid-template-columns: 50px 50px 50px;
   grid-template-rows: 50px 50px 50px;
   gap: 10px;
-  justify-items: center;
 }
 
 #btn-triangle { grid-area: triangle; }
