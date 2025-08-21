@@ -3,58 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🎮 Calibrador de Controle</title>
+  <title>Calibrador de Controle</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- HEADER -->
+  <!-- Header -->
   <header>
     <h1>🎮 Calibrador de Controle</h1>
     <a href="https://www.paypal.com/donate/?hosted_button_id=KCEK7FJ3H36TL" target="_blank" class="donate-btn">💖 Apoie o Projeto</a>
   </header>
 
-  <!-- STATUS -->
+  <!-- Status -->
   <section id="status">
     <p>Status: <span id="connection-status">Aguardando controle...</span></p>
     <p>Bateria: <span id="battery-level">--%</span></p>
   </section>
 
-  <!-- MAIN -->
+  <!-- Grid principal -->
   <main>
-    <div class="controller-container">
-
-      <!-- LADO ESQUERDO -->
-      <div class="controller-left">
-        <canvas id="left-stick" width="150" height="150"></canvas>
-        <canvas id="dpad" width="100" height="100"></canvas>
-        <div class="extra-buttons-left">
-          <div id="l1">L1</div>
-          <div id="l2">L2</div>
-          <div id="share">Share</div>
-          <div id="touch">Touch</div>
-        </div>
+    <!-- Botões de ação -->
+    <section class="controller">
+      <h2>Botões</h2>
+      <div class="buttons-grid">
+        <div id="btn-triangle">△</div>
+        <div id="btn-square">□</div>
+        <div id="btn-cross">✕</div>
+        <div id="btn-circle">○</div>
+        <div id="l1">L1</div>
+        <div id="l2">L2</div>
+        <div id="r1">R1</div>
+        <div id="r2">R2</div>
+        <div id="share">Share</div>
+        <div id="touch">Touch</div>
+        <div id="options">Options</div>
+        <div id="ps">PS</div>
       </div>
+    </section>
 
-      <!-- LADO DIREITO -->
-      <div class="controller-right">
-        <canvas id="right-stick" width="150" height="150"></canvas>
-        <div class="buttons-grid">
-          <div id="btn-triangle">△</div>
-          <div id="btn-circle">○</div>
-          <div id="btn-cross">✕</div>
-          <div id="btn-square">□</div>
-        </div>
-        <div class="extra-buttons-right">
-          <div id="r1">R1</div>
-          <div id="r2">R2</div>
-          <div id="options">Options/Menu</div>
-          <div id="ps">PS/Xbox/Switch</div>
-        </div>
-      </div>
+    <!-- Analógicos e D-Pad -->
+    <section class="sticks">
+      <h2>Analógicos & D-Pad</h2>
+      <canvas id="left-stick" width="150" height="150"></canvas>
+      <canvas id="right-stick" width="150" height="150"></canvas>
+      <canvas id="dpad" width="100" height="100"></canvas>
+    </section>
 
-    </div>
-
-    <!-- CALIBRAÇÃO -->
+    <!-- Calibração -->
     <section class="calibration">
       <h2>Calibração</h2>
       <label>Dead Zone:
@@ -65,7 +59,7 @@
       </label>
     </section>
 
-    <!-- PERFIS -->
+    <!-- Perfis -->
     <section class="profiles">
       <h2>Perfis</h2>
       <button id="save-profile">💾 Salvar</button>
@@ -75,9 +69,9 @@
     </section>
   </main>
 
-  <!-- RODAPÉ -->
+  <!-- Rodapé -->
   <footer>
-    <p>Projeto aberto por <strong>TunkX8</strong> 🚀</p>
+    <p>Projeto aberto por <strong>TunkX8</strong></p>
   </footer>
 
   <script src="script.js"></script>
