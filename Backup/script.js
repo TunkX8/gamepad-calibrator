@@ -7,7 +7,7 @@ let rightStick = {x:0, y:0};
 let animLeft = {x:0, y:0};
 let animRight = {x:0, y:0};
 
-// DPAD
+// D-PAD
 let dpadState = {up:false, down:false, left:false, right:false};
 
 // DEADZONE / DRIFT
@@ -34,16 +34,21 @@ const buttons = {
   r1: document.getElementById("r1"),
   r2: document.getElementById("r2"),
   share: document.getElementById("share"),
+  touch: document.getElementById("touch"),
   options: document.getElementById("options"),
   ps: document.getElementById("ps")
 };
 
-// FUNÇÃO DEADZONE
+// PERFIS
+const saveBtn = document.getElementById("save-profile");
+const loadBtn = document.getElementById("load-profile");
+const exportBtn = document.getElementById("export-profile");
+const fileInput = document.getElementById("file-input");
+
+// ===== FUNÇÕES AUX =====
 function applyDeadzone(value){
   return Math.abs(value)<deadzone ? 0 : value;
 }
-
-// FUNÇÃO LERP
 function lerp(a,b,t){ return a+(b-a)*t; }
 
 // ===== GAMEPAD CONNECT/DISCONNECT =====
@@ -56,11 +61,11 @@ window.addEventListener("gamepaddisconnected", (e)=>{
   gamepadIndex = null;
   document.getElementById("connection-status").textContent = "Aguardando controle...";
 });
-// ===== FUNÇÕES DE DESENHO =====
+
+// ===== DESENHO STICKS E D-PAD =====
 const stickRadius = 30;
 const dpadSize = 20;
 
-// Desenha sticks
 function drawStick(ctx, stick){
   ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
   const centerX = ctx.canvas.width/2;
@@ -74,43 +79,61 @@ function drawStick(ctx, stick){
   ctx.stroke();
 }
 
-// Desenha D-Pad
 function drawDPad(ctx, state){
   ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
   const w=ctx.canvas.width, h=ctx.canvas.height;
   const active="#3ae03a", base="#5af2f2";
   
-  // Vertical
-  if(state.up) ctx.fillStyle=active; else ctx.fillStyle=base;
+  ctx.fillStyle = state.up ? active : base;
   ctx.fillRect(w/2-dpadSize/2, h/2-dpadSize*1.5, dpadSize, dpadSize);
-  if(state.down) ctx.fillStyle=active; else ctx.fillStyle=base;
+  
+  ctx.fillStyle = state.down ? active : base;
   ctx.fillRect(w/2-dpadSize/2, h/2+dpadSize/2, dpadSize, dpadSize);
   
-  // Horizontal
-  if(state.left) ctx.fillStyle=active; else ctx.fillStyle=base;
+  ctx.fillStyle = state.left ? active : base;
   ctx.fillRect(w/2-dpadSize*1.5, h/2-dpadSize/2, dpadSize, dpadSize);
-  if(state.right) ctx.fillStyle=active; else ctx.fillStyle=base;
+  
+  ctx.fillStyle = state.right ? active : base;
   ctx.fillRect(w/2+dpadSize/2, h/2-dpadSize/2, dpadSize, dpadSize);
 }
-// ===== FUNÇÃO PARA ATUALIZAR BOTÕES =====
-function updateButtons(buttonStates){
-  // Botões principais PS/Xbox
-  buttons.triangle.classList.toggle("active", buttonStates[3]?.pressed);
-  buttons.circle.classList.toggle("active", buttonStates[1]?.pressed);
-  buttons.cross.classList.toggle("active", buttonStates[0]?.pressed);
-  buttons.square.classList.toggle("active", buttonStates[2]?.pressed);
 
-  // Extras
-  buttons.l1.classList.toggle("active", buttonStates[4]?.pressed);
-  buttons.r1.classList.toggle("active", buttonStates[5]?.pressed);
-  buttons.l2.classList.toggle("active", buttonStates[6]?.pressed);
-  buttons.r2.classList.toggle("active", buttonStates[7]?.pressed);
-  buttons.share.classList.toggle("active", buttonStates[8]?.pressed);
-  buttons.options.classList.toggle("active", buttonStates[9]?.pressed);
-  buttons.ps.classList.toggle("active", buttonStates[16]?.pressed || buttonStates[10]?.pressed); // PS/Xbox/Switch
+// ===== ATUALIZAÇÃO DO D-PAD =====
+function updateDPad(buttonStates){
+  dpadState.up = !!buttonStates[12]?.pressed;
+  dpadState.down = !!buttonStates[13]?.pressed;
+  dpadState.left = !!buttonStates[14]?.pressed;
+  dpadState.right = !!buttonStates[15]?.pressed;
 }
 
-// ===== FUNÇÃO PARA ATUALIZAR GAMEPAD =====
+// ===== ATUALIZAÇÃO DO TOUCH (PS5) =====
+function updateTouch(buttonStates){
+  // Checa Touch do PS5 em diferentes navegadores
+  buttons.touch.classList.toggle(
+    "active",
+    !!buttonStates[13]?.pressed || !!buttonStates[17]?.pressed
+  );
+}
+
+// ===== ATUALIZAÇÃO DOS BOTÕES DE AÇÃO (PS) =====
+function updateActionButtons(buttonStates){
+  buttons.triangle.classList.toggle("active", !!buttonStates[3]?.pressed);
+  buttons.square.classList.toggle("active", !!buttonStates[2]?.pressed);
+  buttons.cross.classList.toggle("active", !!buttonStates[0]?.pressed);
+  buttons.circle.classList.toggle("active", !!buttonStates[1]?.pressed);
+}
+
+// ===== ATUALIZAÇÃO DOS BOTOES EXTRAS =====
+function updateExtraButtons(buttonStates){
+  buttons.l1.classList.toggle("active", !!buttonStates[4]?.pressed);
+  buttons.r1.classList.toggle("active", !!buttonStates[5]?.pressed);
+  buttons.l2.classList.toggle("active", !!buttonStates[6]?.pressed);
+  buttons.r2.classList.toggle("active", !!buttonStates[7]?.pressed);
+  buttons.share.classList.toggle("active", !!buttonStates[8]?.pressed);
+  buttons.options.classList.toggle("active", !!buttonStates[9]?.pressed);
+  buttons.ps.classList.toggle("active", !!buttonStates[16]?.pressed || !!buttonStates[10]?.pressed);
+}
+
+// ===== ATUALIZA GAMEPAD =====
 function updateGamepad(){
   if(gamepadIndex !== null){
     const gp = navigator.getGamepads()[gamepadIndex];
@@ -123,35 +146,81 @@ function updateGamepad(){
     rightStick.y = applyDeadzone(gp.axes[3]+drift);
 
     // D-PAD
-    dpadState.up = gp.buttons[12]?.pressed;
-    dpadState.down = gp.buttons[13]?.pressed;
-    dpadState.left = gp.buttons[14]?.pressed;
-    dpadState.right = gp.buttons[15]?.pressed;
+    updateDPad(gp.buttons);
 
-    // BOTÕES
-    updateButtons(gp.buttons);
+    // TOUCH
+    updateTouch(gp.buttons);
+
+    // BOTÕES DE AÇÃO
+    updateActionButtons(gp.buttons);
+
+    // BOTOES EXTRAS
+    updateExtraButtons(gp.buttons);
   }
 }
+
 // ===== LOOP DE ANIMAÇÃO =====
 function gameLoop(){
-  updateGamepad(); // Atualiza sticks, dpad e botões
+  updateGamepad();
 
-  // Suavização dos sticks com lerp
   animLeft.x = lerp(animLeft.x, leftStick.x, 0.2);
   animLeft.y = lerp(animLeft.y, leftStick.y, 0.2);
   animRight.x = lerp(animRight.x, rightStick.x, 0.2);
   animRight.y = lerp(animRight.y, rightStick.y, 0.2);
 
-  // Desenha sticks
   drawStick(leftCtx, animLeft);
   drawStick(rightCtx, animRight);
-
-  // Desenha D-Pad
   drawDPad(dpadCtx, dpadState);
 
-  // Próximo frame
   requestAnimationFrame(gameLoop);
 }
-
-// ===== INICIA LOOP =====
 requestAnimationFrame(gameLoop);
+
+// ===== FUNÇÕES PERFIS =====
+function saveProfile(){
+  const profile = { deadzone, drift };
+  localStorage.setItem("controllerProfile", JSON.stringify(profile));
+  alert("Perfil salvo localmente!");
+}
+
+function loadProfile(){
+  const profileStr = localStorage.getItem("controllerProfile");
+  if(profileStr){
+    const profile = JSON.parse(profileStr);
+    deadzone = profile.deadzone;
+    drift = profile.drift;
+    deadzoneInput.value = deadzone;
+    driftInput.value = drift;
+    alert("Perfil carregado!");
+  } else alert("Nenhum perfil salvo encontrado!");
+}
+
+function exportProfile(){
+  const profile = { deadzone, drift };
+  const blob = new Blob([JSON.stringify(profile, null, 2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "perfil_controle.json";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importProfile(file){
+  const reader = new FileReader();
+  reader.onload = e=>{
+    const profile = JSON.parse(e.target.result);
+    deadzone = profile.deadzone;
+    drift = profile.drift;
+    deadzoneInput.value = deadzone;
+    driftInput.value = drift;
+    alert("Perfil importado!");
+  };
+  reader.readAsText(file);
+}
+
+// ===== EVENTOS BOTÕES PERFIS =====
+saveBtn.addEventListener("click", saveProfile);
+loadBtn.addEventListener("click", ()=>fileInput.click());
+exportBtn.addEventListener("click", exportProfile);
+fileInput.addEventListener("change", e=>importProfile(e.target.files[0]));
