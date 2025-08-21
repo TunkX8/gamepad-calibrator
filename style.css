@@ -101,24 +101,44 @@ main {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  max-width: 800px;
+  max-width: 900px;
   gap: 2rem;
   align-items: flex-start;
 }
 
-.left-side, .center-buttons, .right-side {
+/* Lado esquerdo: D-Pad + Analógico esquerdo */
+.left-side {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
 }
 
-/* Center buttons (Share, Touch, Options, PS) */
-.center-buttons {
+/* Lado direito: Analógico direito + Botões de ação */
+.right-side {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 1rem;
 }
+
+/* Center buttons: Share, Touch, Options, PS */
+.center-buttons {
+  display: grid;
+  grid-template-areas:
+    "share touch option"
+    ". ps .";
+  grid-template-columns: 100px 100px 100px;
+  grid-template-rows: 50px 50px;
+  gap: 1rem;
+  justify-items: center;
+  align-items: center;
+}
+
+#share { grid-area: share; }
+#touch { grid-area: touch; }
+#options { grid-area: option; }
+#ps { grid-area: ps; }
 
 .center-buttons div {
   background: #222;
