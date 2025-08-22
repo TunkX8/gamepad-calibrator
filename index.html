@@ -28,10 +28,10 @@
     <strong>Bateria:</strong> <span id="battery-level">--%</span>
   </div>
   <div class="status-item">
-    <strong>Drift:</strong> <span id="driftValue">0</span>
+    <strong>Conexão:</strong> <span id="connection-type">USB</span>
   </div>
   <div class="status-item">
-    <strong>Deadzone:</strong> <span id="deadzoneValue">0</span>
+    <strong>Perfil:</strong> <span id="profile-name">Padrão</span>  
   </div>
 </section>
 
@@ -102,9 +102,16 @@
       <div id="r3" class="btn pill">R3</div>
     </div>
   </main>
-
+  
+<div class="status-item">
+    <strong>Drift:</strong> <span id="driftValue">0</span>
+  </div>
+  <div class="status-item">
+    <strong>Deadzone:</strong> <span id="deadzoneValue">0</span>
+  </div>
   <!-- Calibração -->
   <section class="calibration">
+    
     <label>Dead Zone:
       <input type="range" id="deadzone" min="0" max="0.3" step="0.01" value="0.05">
     </label>
@@ -112,6 +119,7 @@
       <input type="range" id="drift" min="-0.2" max="0.2" step="0.01" value="0">
     </label>
   </section>
+  
 
   <!-- Menu Avançado Apocalipse 2.0 -->
   <div id="advancedPanel" style="display:none; margin-top:15px; padding:15px; border:2px solid #444; border-radius:10px; background-color:#222; color:#fff;">
