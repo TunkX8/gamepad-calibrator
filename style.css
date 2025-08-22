@@ -1,104 +1,43 @@
-/* ======== Reset básico ======== */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', sans-serif;
-}
+/* ====== Estilos base para o layout de controle ====== */
 
 body {
-  background: linear-gradient(135deg, #0d0f1a, #0f0d1a);
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #001f3f, #004d40, #660000);
   color: #fff;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-header {
+header.header-container {
+  padding: 10px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 30px;
-  background: #111122;
-  border-bottom: 1px solid #333;
+  background-color: rgba(0,0,0,0.7);
 }
 
 header h1 {
-  font-size: 1.8rem;
-  color: #5af2f2;
+  font-size: 1.5rem;
 }
 
-header .donate-btn {
-  background: #5af2f2;
-  color: #111;
-  padding: 8px 15px;
-  border-radius: 6px;
+.donate-btn {
   text-decoration: none;
+  background-color: #ff4081;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
   font-weight: bold;
-  transition: 0.3s;
 }
 
-header .donate-btn:hover {
-  background: #3ae03a;
-}
-
-main {
+.main-container {
   flex: 1;
   display: flex;
   padding: 20px;
+  gap: 20px;
 }
 
-/* ====== Sidebar de configurações ====== */
-.sidebar {
-  width: 260px;
-  background: rgba(20, 20, 30, 0.95);
-  padding: 20px;
-  border-radius: 10px;
-  margin-left: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.sidebar h2 {
-  color: #5af2f2;
-  margin-bottom: 10px;
-}
-
-.config-item label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-.config-item input[type="range"], 
-.config-item select {
-  width: 100%;
-  margin-bottom: 10px;
-}
-
-.config-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-
-.config-actions button {
-  flex: 1 1 48%;
-  padding: 8px 10px;
-  border: none;
-  border-radius: 6px;
-  background: #5af2f2;
-  color: #111;
-  cursor: pointer;
-  font-weight: bold;
-  transition: 0.3s;
-}
-
-.config-actions button:hover {
-  background: #3ae03a;
-}
-
-/* ====== Container do controle ====== */
 .controller-container {
   flex: 1;
   display: flex;
@@ -106,303 +45,53 @@ main {
   align-items: center;
 }
 
-/* ====== Grid do controle ====== */
 .controller-grid {
   display: grid;
   grid-template-areas:
-    "tl top-tr"
-    "dpad center action"
-    "ls stick-right"
-    "ls stick-right";
-  grid-template-columns: 120px 1fr 120px;
-  grid-template-rows: 70px 140px 160px 160px;
-  gap: 15px;
-  position: relative;
+    "top-left center-cluster top-right"
+    "dpad action-cluster action-cluster"
+    "stick-left stick-right stick-right";
+  gap: 12px;
 }
 
-/* ====== Triggers ====== */
-.trigger-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-}
+/* Topo: gatilhos */
+.top-left { grid-area: top-left; display: flex; flex-direction: column; gap: 6px; align-items: center; }
+.top-right { grid-area: top-right; display: flex; flex-direction: column; gap: 6px; align-items: center; }
 
-.trigger-bar {
-  width: 100%;
-  height: 8px;
-  background: #222;
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.trigger-bar div {
-  height: 100%;
-  background: #5af2f2;
-  width: 0%;
-  transition: width 0.1s linear;
-}
-
-/* ====== Botões do controle ====== */
-.btn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  user-select: none;
-  cursor: default;
-  font-weight: bold;
-  transition: 0.15s;
-}
-
-.btn.pill {
-  padding: 8px 14px;
-  border-radius: 12px;
-  font-size: 0.85rem;
-}
-
-.btn.round {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: #222;
-  color: #5af2f2;
-  font-size: 1.2rem;
-  box-shadow: 0 0 8px #5af2f2;
-}
-
-.btn.active {
-  background: #3ae03a;
-  box-shadow: 0 0 10px #3ae03a;
-}
-
-/* ====== D-Pad ====== */
-.dpad {
-  display: grid;
-  grid-template-areas:
-    ". up ."
-    "left . right"
-    ". down .";
-  gap: 5px;
-}
-
-.dpad-key {
-  width: 40px;
-  height: 40px;
-  background: #222;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 6px;
-  box-shadow: 0 0 5px #5af2f2;
-}
-
-/* ====== Analógicos ====== */
-.stick-left, .stick-right {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-canvas {
-  border-radius: 50%;
-  background: #111;
-  box-shadow: 0 0 12px #5af2f2 inset;
-}
-
-/* ====== Centro: Share, PS, Touch, Mic, Options ====== */
-.center-cluster {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-.touch-ps {
-  display: flex;
-  gap: 5px;
-}
-
-/* ====== Responsivo ====== */
-@media (max-width: 1000px) {
-  .controller-grid {
-    grid-template-columns: 100px 1fr 100px;
-    grid-template-rows: 60px 120px 140px 140px;
-  }
-
-  .btn.round {
-    width: 40px;
-    height: 40px;
-    font-size: 1rem;
-  }
-
-  .dpad-key {
-    width: 35px;
-    height: 35px;
-  }
-
-  canvas {
-    width: 120px !important;
-    height: 120px !important;
-  }
-}
-/* ====== Efeitos neon e fundo dinâmico ====== */
-
-/* Fundo gradiente animado */
-body {
-  background: linear-gradient(135deg, #0039a6, #107c10, #e60012);
-  background-size: 600% 600%;
-  animation: gradientShift 20s ease infinite;
-  color: #ffffff;
-  font-family: 'Arial', sans-serif;
-}
-
-@keyframes gradientShift {
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
-}
-
-/* Botões - efeito neon ao pressionar */
-.btn {
-  transition: all 0.15s ease-in-out;
-  box-shadow: 0 0 8px rgba(0,0,0,0.5);
-}
-
-.btn.active {
-  box-shadow: 0 0 12px #0ff, 0 0 20px #0ff, 0 0 30px #0ff;
-  transform: scale(1.08);
-}
-
-/* Botões de ação (△ ◯ ✕ □) com neon específico */
-#btn-triangle.active { box-shadow: 0 0 10px #0039a6, 0 0 20px #0039a6; }
-#btn-circle.active   { box-shadow: 0 0 10px #e60012, 0 0 20px #e60012; }
-#btn-cross.active    { box-shadow: 0 0 10px #107c10, 0 0 20px #107c10; }
-#btn-square.active   { box-shadow: 0 0 10px #ffff00, 0 0 20px #ffff00; }
-
-/* Analógicos com borda neon ao mover */
-canvas {
-  border: 3px solid rgba(255,255,255,0.1);
-  border-radius: 50%;
-  transition: border-color 0.2s ease;
-}
-
-canvas:active, canvas.active {
-  border-color: #0ff;
-  box-shadow: 0 0 15px #0ff, 0 0 25px #0ff;
-}
-
-/* Triggers L2/R2 neon */
-.trigger-bar div {
-  transition: width 0.1s ease;
-  background: linear-gradient(90deg, #0039a6, #107c10, #e60012);
-  border-radius: 4px;
-}
-
-/* Barras laterais e inputs */
-.sidebar {
-  background: rgba(0,0,0,0.7);
-  border-left: 2px solid #0ff;
-  padding: 16px;
-  overflow-y: auto;
-}
-
-/* Labels neon ao ajustar sliders */
-.config-item label span {
-  color: #0ff;
-  font-weight: bold;
-  transition: color 0.2s;
-}
-
-.config-item input[type="range"]:active + span,
-.config-item input[type="range"]:focus + span {
-  color: #fff;
-}
-
-/* Pequenos refinamentos */
-.pill, .round {
-  user-select: none;
-}
-/* ====== Ajuste de tamanhos e layout dos controles ====== */
-
-/* Botões de ação (△ ◯ ✕ □) */
-.action-cluster {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  justify-content: center;
-  align-items: center;
-}
-
-.btn.round {
-  width: 50px;
-  height: 50px;
-  font-size: 22px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Botões menores (Share, Options, PS, Mic) */
-.center-cluster .btn.pill.small {
-  width: 36px;
-  height: 28px;
-  font-size: 14px;
-}
-
-/* Botão Touch */
-.touch-ps .btn.pill {
-  width: 70px;
-  height: 32px;
-  font-size: 16px;
-}
-
-/* Triggers L1/L2/R1/R2 */
 .top-left .btn.pill, .top-right .btn.pill {
   width: 48px;
   height: 24px;
   font-size: 14px;
 }
 
-/* D-Pad */
-.dpad {
-  display: grid;
-  grid-template-columns: 40px 40px 40px;
-  grid-template-rows: 40px 40px 40px;
-  gap: 4px;
-  justify-content: center;
-  align-items: center;
-}
+/* Centro: Share, Options, Touch, PS, Mic */
+.center-cluster { grid-area: center-cluster; display: flex; flex-direction: column; gap: 6px; align-items: center; }
+.center-cluster .btn.pill { width: 70px; height: 32px; font-size: 16px; }
+.center-cluster .btn.pill.small { width: 36px; height: 28px; font-size: 14px; }
 
-.dpad-key {
-  width: 36px;
-  height: 36px;
-  font-size: 18px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+/* D-Pad */
+.dpad { grid-area: dpad; display: grid; grid-template-columns: 40px 40px 40px; grid-template-rows: 40px 40px 40px; gap: 4px; justify-content: center; align-items: center; }
+.dpad-key { width: 36px; height: 36px; font-size: 18px; display: flex; justify-content: center; align-items: center; }
+
+/* Botões de ação */
+.action-cluster { grid-area: action-cluster; display: flex; flex-direction: column; gap: 10px; justify-content: center; align-items: center; }
+.btn.round { width: 50px; height: 50px; font-size: 22px; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
 
 /* Analógicos */
-.stick-left, .stick-right {
-  width: 140px;
-  height: 140px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+.stick-left, .stick-right { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+canvas { width: 100px; height: 100px; }
+.stick-left #l3, .stick-right #r3 { width: 38px; height: 26px; font-size: 14px; margin-top: 6px; }
 
-canvas {
-  width: 100px;
-  height: 100px;
-}
+/* Barra lateral direita */
+.sidebar { width: 250px; display: flex; flex-direction: column; gap: 10px; background-color: rgba(0,0,0,0.5); padding: 10px; border-radius: 8px; }
+.config-item { display: flex; flex-direction: column; gap: 4px; }
+.config-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
 
-/* L3/R3 */
-.stick-left #l3, .stick-right #r3 {
-  width: 38px;
-  height: 26px;
-  font-size: 14px;
-  margin-top: 6px;
-}
+/* Botões de configuração */
+button { background-color: #0055aa; color: white; border: none; border-radius: 6px; padding: 6px 10px; cursor: pointer; }
+button:hover { background-color: #0077cc; }
+
+/* Trigger bars */
+.trigger-container { display: flex; align-items: center; gap: 6px; }
+.trigger-bar { width: 70px; height: 6px; background: rgba(255,255,255,0.2); border-radius: 4px; }
+.trigger-bar > div { height: 100%; background: #00ffcc; width: 0%; border-radius: 4px; }
