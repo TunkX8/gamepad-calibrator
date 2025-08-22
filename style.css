@@ -74,10 +74,10 @@ header h1{ color:var(--c-neon); font-size:1.45rem; display:flex; gap:.5rem; alig
   height:100%; width:0%; background:var(--c-accent); border-radius:6px;
   transition: width 0.1s linear;
 }
-#l1{ order:0; }
-#l2{ order:1; }
-#r1{ order:0; }
-#r2{ order:1; }
+#l2{ order:0; }
+#l1{ order:1; }
+#r2{ order:0; }
+#r1{ order:1; }
 
 /* Posicionamento topo */
 .top-left { grid-column:1; grid-row:1; justify-self:start; }
