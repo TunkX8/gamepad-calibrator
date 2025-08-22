@@ -218,3 +218,23 @@ footer{
   background-color: #5af2f2;
   color: #222;
 }
+
+/* Painel de status atualizado */
+.status-panel {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin: 15px 0;
+  flex-wrap: wrap;
+  font-size: 14px;
+}
+
+.status-item {
+  background-color: #222;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  text-align: center;
+  min-width: 100px;
+}
