@@ -323,3 +323,86 @@ canvas:active, canvas.active {
 .pill, .round {
   user-select: none;
 }
+/* ====== Ajuste de tamanhos e layout dos controles ====== */
+
+/* Botões de ação (△ ◯ ✕ □) */
+.action-cluster {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn.round {
+  width: 50px;
+  height: 50px;
+  font-size: 22px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Botões menores (Share, Options, PS, Mic) */
+.center-cluster .btn.pill.small {
+  width: 36px;
+  height: 28px;
+  font-size: 14px;
+}
+
+/* Botão Touch */
+.touch-ps .btn.pill {
+  width: 70px;
+  height: 32px;
+  font-size: 16px;
+}
+
+/* Triggers L1/L2/R1/R2 */
+.top-left .btn.pill, .top-right .btn.pill {
+  width: 48px;
+  height: 24px;
+  font-size: 14px;
+}
+
+/* D-Pad */
+.dpad {
+  display: grid;
+  grid-template-columns: 40px 40px 40px;
+  grid-template-rows: 40px 40px 40px;
+  gap: 4px;
+  justify-content: center;
+  align-items: center;
+}
+
+.dpad-key {
+  width: 36px;
+  height: 36px;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Analógicos */
+.stick-left, .stick-right {
+  width: 140px;
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+canvas {
+  width: 100px;
+  height: 100px;
+}
+
+/* L3/R3 */
+.stick-left #l3, .stick-right #r3 {
+  width: 38px;
+  height: 26px;
+  font-size: 14px;
+  margin-top: 6px;
+}
