@@ -227,12 +227,37 @@ canvas { cursor: crosshair; }
 /* Input Range estilo neon */
 input[type="range"] {
   -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 100%;
   height: 6px;
   border-radius: 3px;
   background: #222;
   outline: none;
   box-shadow: inset 0 0 4px rgba(90,242,242,.2);
 }
+
+/* Thumb - Webkit (Chrome, Safari) */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #5af2f2;
+  box-shadow: 0 0 8px #5af2f2, 0 0 16px #3ae03a;
+  cursor: pointer;
+  margin-top: -7px; /* centraliza no trilho */
+}
+
+/* Thumb - Firefox */
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #5af2f2;
+  box-shadow: 0 0 8px #5af2f2, 0 0 16px #3ae03a;
+  cursor: pointer;
+}
+
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 16px; height: 16px; border-radius:50%;
