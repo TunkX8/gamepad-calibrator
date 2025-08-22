@@ -61,7 +61,7 @@ function applyLabels(profile){
     share.textContent = "Share";
     options.textContent = "Options";
     touch.textContent = "Touch";
-    ps.textContent = "PS";
+    ps.style.display = "";
     mic.style.display = ""; // visível
   }
 }
@@ -105,39 +105,21 @@ function pressed(btn){
 
 // ====== Atualiza botões ======
 function updateButtons(gp, map){
-  // L1/R1
   setActive("l1", pressed(gp.buttons[map.l1]));
   setActive("r1", pressed(gp.buttons[map.r1]));
-
-  // L2/R2
   setActive("l2", pressed(gp.buttons[map.l2]));
   setActive("r2", pressed(gp.buttons[map.r2]));
-
-
-  // L3/R3
   setActive("l3", pressed(gp.buttons[map.l3]));
   setActive("r3", pressed(gp.buttons[map.r3]));
-
-  // Centro
   setActive("share", pressed(gp.buttons[map.share]));
   setActive("options", pressed(gp.buttons[map.options]));
-  if(gp.buttons[map.ps])    setActive("ps", pressed(gp.buttons[map.ps]));
-  if(gp.buttons[map.touch]) setActive("touch", pressed(gp.buttons[map.touch]));
-
-  // MIC fallback
-  if(map.mic !== null && gp.buttons[map.mic]){
-    setActive("mic", pressed(gp.buttons[map.mic]));
-  } else {
-    setActive("mic", false);
-  }
-
-  // D-Pad
+  setActive("ps", pressed(gp.buttons[map.ps]));
+  setActive("touch", pressed(gp.buttons[map.touch]));
+  setActive("mic", map.mic !== null && gp.buttons[map.mic] ? pressed(gp.buttons[map.mic]) : false);
   setActive("dpad-up",    pressed(gp.buttons[map.dpad.up]));
   setActive("dpad-down",  pressed(gp.buttons[map.dpad.down]));
   setActive("dpad-left",  pressed(gp.buttons[map.dpad.left]));
   setActive("dpad-right", pressed(gp.buttons[map.dpad.right]));
-
-  // Botões de ação
   setActive("btn-square", pressed(gp.buttons[map.actions.square]));
   setActive("btn-cross",  pressed(gp.buttons[map.actions.cross]));
   setActive("btn-circle", pressed(gp.buttons[map.actions.circle]));
@@ -150,11 +132,10 @@ function updateTriggersPercent(gp, map){
   const r2Val = gp.buttons[map.r2]?.value || 0;
   document.getElementById("l2-percent").textContent = Math.round(l2Val*100) + "%";
   document.getElementById("r2-percent").textContent = Math.round(r2Val*100) + "%";
-
-  // barra visual
   document.getElementById("l2-bar").style.width = `${l2Val*100}%`;
   document.getElementById("r2-bar").style.width = `${r2Val*100}%`;
 }
+
 // ====== Analógicos ======
 function updateSticks(gp){
   drawStick("left-stick",  gp.axes[0], gp.axes[1]);
@@ -168,20 +149,17 @@ function drawStick(id, x, y){
   const W = c.width, H = c.height;
   ctx.clearRect(0,0,W,H);
 
-  // Deadzone e drift
   const dz = parseFloat(document.getElementById("deadzone").value || "0.05");
   const drift = parseFloat(document.getElementById("drift").value || "0");
   const ax = Math.abs(x) < dz ? 0 : x;
   const ay = Math.abs(y) < dz ? 0 : y + drift;
 
-  // Fundo do stick
   ctx.beginPath();
   ctx.arc(W/2, H/2, W/2 - 6, 0, Math.PI*2);
   ctx.strokeStyle = "#5af2f2";
   ctx.lineWidth = 3;
   ctx.stroke();
 
-  // Indicador
   ctx.beginPath();
   ctx.arc(W/2 + ax*(W/2 - 12), H/2 + ay*(H/2 - 12), 10, 0, Math.PI*2);
   ctx.fillStyle = "#3ae03a";
@@ -241,33 +219,10 @@ exportBtn.addEventListener("click", () => {
   setTimeout(()=>URL.revokeObjectURL(url), 1000);
 });
 
-// ====== Menu Avançado ======
-const toggleBtn = document.getElementById('toggleAdvanced');
-const advancedPanel = document.getElementById('advancedPanel');
-const driftValueDisplay = document.getElementById('driftValue');
-const deadzoneValueDisplay = document.getElementById('deadzoneValue');
+// ====== Sensibilidade / Trigger / Presets ======
 const sensitivitySlider = document.getElementById('sensitivitySlider');
 const triggerCurveSlider = document.getElementById('triggerCurveSlider');
 const presetProfile = document.getElementById('presetProfile');
-
-toggleBtn.addEventListener('click', () => {
-  const isVisible = advancedPanel.style.display === 'block';
-  advancedPanel.style.display = isVisible ? 'none' : 'block';
-  toggleBtn.textContent = isVisible ? 'Avançado' : 'Básico';
-});
-
-// Atualização em tempo real
-function updateDashboard(){
-  driftValueDisplay.textContent = drift.value;
-  deadzoneValueDisplay.textContent = deadzone.value;
-  requestAnimationFrame(updateDashboard);
-}
-updateDashboard();
-
-// Sliders e presets
-sensitivitySlider.addEventListener('input', (e) => applySensitivity(e.target.value));
-triggerCurveSlider.addEventListener('input', (e) => applyTriggerCurve(e.target.value));
-presetProfile.addEventListener('change', (e) => applyPresetProfile(e.target.value));
 
 function applySensitivity(val){
   console.log("Sensibilidade aplicada:", val);
@@ -285,3 +240,7 @@ function applyPresetProfile(preset){
     case 'fight': applySensitivity(7); applyTriggerCurve(50); break;
   }
 }
+
+sensitivitySlider.addEventListener('input', (e) => applySensitivity(e.target.value));
+triggerCurveSlider.addEventListener('input', (e) => applyTriggerCurve(e.target.value));
+presetProfile.addEventListener('change', (e) => applyPresetProfile(e.target.value));
