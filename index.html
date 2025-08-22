@@ -16,71 +16,7 @@
   </header>
 
   <main class="main-container">
-    <!-- Controle -->
-    <div class="controller-container">
-      <div class="controller-grid">
-        <!-- Topo: L1 L2 |           | R1 R2 -->
-        <div class="top-left trigger-group">
-          <div id="l1" class="btn pill">L1</div>
-          <div id="l2" class="btn pill">L2</div>
-          <div class="trigger-container">
-            <div class="trigger-bar"><div id="l2-bar"></div></div>
-            <span id="l2-percent">0%</span>
-          </div>
-        </div>
-        <div class="top-right trigger-group">
-          <div id="r1" class="btn pill">R1</div>
-          <div id="r2" class="btn pill">R2</div>
-          <div class="trigger-container">
-            <div class="trigger-bar"><div id="r2-bar"></div></div>
-            <span id="r2-percent">0%</span>
-          </div>
-        </div>
-
-        <!-- Meio-esquerda: D-Pad em cruz -->
-        <div class="dpad" aria-label="D-Pad">
-          <div id="dpad-up"    class="btn dpad-key">▲</div>
-          <div id="dpad-left"  class="btn dpad-key">◀</div>
-          <div id="dpad-right" class="btn dpad-key">▶</div>
-          <div id="dpad-down"  class="btn dpad-key">▼</div>
-        </div>
-
-        <!-- Meio-centro: Share | Touch | Options  e abaixo: PS e Mic -->
-        <div class="center-cluster">
-          <div class="center-row">
-            <div id="share"   class="btn pill">Share</div>
-            <div class="touch-ps">
-              <div id="touch" class="btn pill">Touch</div>
-              <div id="ps"    class="btn pill small">PS</div>
-              <div id="mic"   class="btn pill small">Mic</div>
-            </div>
-            <div id="options" class="btn pill">Options</div>
-          </div>
-        </div>
-
-        <!-- Meio-direita: Botões de ação em cruz -->
-        <div class="action-cluster" aria-label="Ação">
-          <div id="btn-triangle" class="btn round">△</div>
-          <div id="btn-circle"   class="btn round">◯</div>
-          <div id="btn-cross"    class="btn round">✕</div>
-          <div id="btn-square"   class="btn round">□</div>
-        </div>
-
-        <!-- Baixo-esquerda: Analógico esquerdo -->
-        <div class="stick-left">
-          <canvas id="left-stick" width="140" height="140"></canvas>
-          <div id="l3" class="btn pill">L3</div>      
-        </div>
-
-        <!-- Baixo-direita: Analógico direito -->
-        <div class="stick-right">
-          <canvas id="right-stick" width="140" height="140"></canvas>
-          <div id="r3" class="btn pill">R3</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Barra lateral direita: todas as configs -->
+    <!-- Barra lateral esquerda: Configurações -->
     <aside class="sidebar">
       <h2>Configurações</h2>
 
@@ -121,6 +57,68 @@
         <input type="file" id="file-input" hidden>
       </div>
     </aside>
+
+    <!-- Controle central -->
+    <div class="controller-container">
+      <div class="controller-grid">
+        <!-- Topo: L1 L2 | | R1 R2 -->
+        <div class="top-left trigger-group">
+          <div id="l1" class="btn pill">L1</div>
+          <div id="l2" class="btn pill">L2</div>
+          <div class="trigger-container">
+            <div class="trigger-bar"><div id="l2-bar"></div></div>
+            <span id="l2-percent">0%</span>
+          </div>
+        </div>
+        <div class="top-right trigger-group">
+          <div id="r1" class="btn pill">R1</div>
+          <div id="r2" class="btn pill">R2</div>
+          <div class="trigger-container">
+            <div class="trigger-bar"><div id="r2-bar"></div></div>
+            <span id="r2-percent">0%</span>
+          </div>
+        </div>
+
+        <!-- Meio-esquerda: D-Pad -->
+        <div class="dpad" aria-label="D-Pad">
+          <div id="dpad-up"    class="btn dpad-key">▲</div>
+          <div id="dpad-left"  class="btn dpad-key">◀</div>
+          <div id="dpad-right" class="btn dpad-key">▶</div>
+          <div id="dpad-down"  class="btn dpad-key">▼</div>
+        </div>
+
+        <!-- Centro: Share | Touch | Options | PS/Mic -->
+        <div class="center-cluster">
+          <div class="center-row">
+            <div id="share"   class="btn pill">Share</div>
+            <div class="touch-ps">
+              <div id="touch" class="btn pill">Touch</div>
+              <div id="ps"    class="btn pill small">PS</div>
+              <div id="mic"   class="btn pill small">Mic</div>
+            </div>
+            <div id="options" class="btn pill">Options</div>
+          </div>
+        </div>
+
+        <!-- Meio-direita: Botões de ação -->
+        <div class="action-cluster" aria-label="Ação">
+          <div id="btn-triangle" class="btn round">△</div>
+          <div id="btn-circle"   class="btn round">◯</div>
+          <div id="btn-cross"    class="btn round">✕</div>
+          <div id="btn-square"   class="btn round">□</div>
+        </div>
+
+        <!-- Baixo: Analógicos -->
+        <div class="stick-left">
+          <canvas id="left-stick" width="100" height="100"></canvas>
+          <div id="l3" class="btn pill">L3</div>      
+        </div>
+        <div class="stick-right">
+          <canvas id="right-stick" width="100" height="100"></canvas>
+          <div id="r3" class="btn pill">R3</div>
+        </div>
+      </div>
+    </div>
   </main>
 
   <footer>
@@ -128,27 +126,5 @@
   </footer>
 
   <script src="script.js"></script>
-  <script>
-    const deadzone = document.getElementById('deadzone');
-    const drift = document.getElementById('drift');
-    const sensitivity = document.getElementById('sensitivitySlider');
-    const triggerCurve = document.getElementById('triggerCurveSlider');
-
-    deadzone.addEventListener('input', () => {
-      document.getElementById('deadzoneValue').textContent = deadzone.value;
-    });
-
-    drift.addEventListener('input', () => {
-      document.getElementById('driftValue').textContent = drift.value;
-    });
-
-    sensitivity.addEventListener('input', () => {
-      document.getElementById('sensitivityValue').textContent = sensitivity.value;
-    });
-
-    triggerCurve.addEventListener('input', () => {
-      document.getElementById('triggerCurveValue').textContent = triggerCurve.value;
-    });
-  </script>
 </body>
 </html>
