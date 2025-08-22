@@ -251,7 +251,7 @@ toggleBtn.addEventListener('click', () => {
   toggleBtn.textContent = isVisible ? 'Avançado' : 'Básico';
 });
 
-// Atualização em tempo real
+// Atualização em tempo real de drift/deadzone
 function updateDashboard(){
   driftValueDisplay.textContent = drift.value;
   deadzoneValueDisplay.textContent = deadzone.value;
