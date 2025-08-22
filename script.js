@@ -3,14 +3,14 @@ let currentProfile = "ps"; // ps | xbox | switch | generic
 
 window.addEventListener("gamepadconnected", (e) => {
   const gp = navigator.getGamepads()[e.gamepad.index];
-  document.getElementById("connection-status")?.textContent = `Conectado: ${gp.id}`;
+  document.getElementById("connection-status").textContent = `Conectado: ${gp.id}`;
   currentProfile = detectProfile(gp.id);
   applyLabels(currentProfile);
   loop();
 });
 
 window.addEventListener("gamepaddisconnected", () => {
-  document.getElementById("connection-status")?.textContent = "Aguardando controle...";
+  document.getElementById("connection-status").textContent = "Aguardando controle...";
 });
 
 // ====== Detecta tipo (rótulos/mapeamento) ======
@@ -34,16 +34,34 @@ function applyLabels(profile){
   const mic = document.getElementById("mic");
 
   if(profile === "xbox"){
-    tri.textContent = "Y"; cir.textContent = "B"; cro.textContent = "A"; sqr.textContent = "X";
-    share.textContent = "View"; options.textContent = "Menu"; touch.textContent = "Xbox"; ps.textContent = "Guide";
+    tri.textContent = "Y";
+    cir.textContent = "B";
+    cro.textContent = "A";
+    sqr.textContent = "X";
+    share.textContent = "View";
+    options.textContent = "Menu";
+    touch.textContent = "Xbox";
+    ps.textContent = "Guide";
     mic.style.display = "none";
   } else if(profile === "switch"){
-    tri.textContent = "X"; cir.textContent = "A"; cro.textContent = "B"; sqr.textContent = "Y";
-    share.textContent = "−"; options.textContent = "+"; touch.textContent = "Home"; ps.textContent = "Capture";
+    tri.textContent = "X";
+    cir.textContent = "A";
+    cro.textContent = "B";
+    sqr.textContent = "Y";
+    share.textContent = "−";
+    options.textContent = "+";
+    touch.textContent = "Home";
+    ps.textContent = "Capture";
     mic.style.display = "none";
   } else {
-    tri.textContent = "△"; cir.textContent = "◯"; cro.textContent = "✕"; sqr.textContent = "□";
-    share.textContent = "Share"; options.textContent = "Options"; touch.textContent = "Touch"; ps.textContent = "PS";
+    tri.textContent = "△";
+    cir.textContent = "◯";
+    cro.textContent = "✕";
+    sqr.textContent = "□";
+    share.textContent = "Share";
+    options.textContent = "Options";
+    touch.textContent = "Touch";
+    ps.textContent = "PS";
     mic.style.display = "";
   }
 }
@@ -68,6 +86,7 @@ function loop(){
     updateButtons(gp, map);
     updateSticks(gp);
     updateTriggersPercent(gp, map);
+    updateBattery(gp);
   }
   requestAnimationFrame(loop);
 }
@@ -92,12 +111,17 @@ function updateButtons(gp, map){
   setActive("r2", pressed(gp.buttons[map.r2]));
   setActive("l3", pressed(gp.buttons[map.l3]));
   setActive("r3", pressed(gp.buttons[map.r3]));
+
   setActive("share", pressed(gp.buttons[map.share]));
   setActive("options", pressed(gp.buttons[map.options]));
   if(gp.buttons[map.ps])    setActive("ps", pressed(gp.buttons[map.ps]));
   if(gp.buttons[map.touch]) setActive("touch", pressed(gp.buttons[map.touch]));
-  if(map.mic !== null && gp.buttons[map.mic]) setActive("mic", pressed(gp.buttons[map.mic])); 
-  else setActive("mic", false);
+
+  if(map.mic !== null && gp.buttons[map.mic]){
+    setActive("mic", pressed(gp.buttons[map.mic]));
+  } else {
+    setActive("mic", false);
+  }
 
   setActive("dpad-up",    pressed(gp.buttons[map.dpad.up]));
   setActive("dpad-down",  pressed(gp.buttons[map.dpad.down]));
@@ -140,7 +164,7 @@ function drawStick(id, x, y){
 
   ctx.beginPath();
   ctx.arc(W/2, H/2, W/2 - 6, 0, Math.PI*2);
-  ctx.strokeStyle = "#0ff";
+  ctx.strokeStyle = "#5af2f2";
   ctx.lineWidth = 3;
   ctx.stroke();
 
@@ -148,6 +172,20 @@ function drawStick(id, x, y){
   ctx.arc(W/2 + ax*(W/2 - 12), H/2 + ay*(H/2 - 12), 10, 0, Math.PI*2);
   ctx.fillStyle = "#3ae03a";
   ctx.fill();
+}
+
+// ====== Bateria ======
+function updateBattery(gp){
+  const el = document.getElementById("battery-level");
+  try{
+    if (gp && gp.battery && typeof gp.battery.level === "number"){
+      el.textContent = Math.round(gp.battery.level * 100) + "%";
+    } else {
+      el.textContent = "--%";
+    }
+  } catch {
+    el.textContent = "--%";
+  }
 }
 
 // ====== Perfis (Salvar/Importar/Exportar) ======
@@ -158,15 +196,14 @@ const loadBtn = document.getElementById("load-profile");
 const exportBtn = document.getElementById("export-profile");
 const fileInput = document.getElementById("file-input");
 
-saveBtn?.addEventListener("click", () => {
+saveBtn.addEventListener("click", () => {
   const profile = { deadzone: deadzone.value, drift: drift.value };
   localStorage.setItem("controllerProfile", JSON.stringify(profile));
   alert("Perfil salvo!");
 });
 
-loadBtn?.addEventListener("click", () => fileInput.click());
-
-fileInput?.addEventListener("change", (e) => {
+loadBtn.addEventListener("click", () => fileInput.click());
+fileInput.addEventListener("change", (e) => {
   const file = e.target.files[0];
   if(!file) return;
   const reader = new FileReader();
@@ -180,7 +217,7 @@ fileInput?.addEventListener("change", (e) => {
   reader.readAsText(file);
 });
 
-exportBtn?.addEventListener("click", () => {
+exportBtn.addEventListener("click", () => {
   const profile = { deadzone: deadzone.value, drift: drift.value };
   const blob = new Blob([JSON.stringify(profile)], { type:"application/json" });
   const url = URL.createObjectURL(blob);
@@ -189,12 +226,46 @@ exportBtn?.addEventListener("click", () => {
   setTimeout(()=>URL.revokeObjectURL(url), 1000);
 });
 
-// ====== Atualização sliders em tempo real ======
+// ====== Menu Avançado ======
+const toggleBtn = document.getElementById('toggleAdvanced');
+const advancedPanel = document.getElementById('advancedPanel');
+const driftValueDisplay = document.getElementById('driftValue');
+const deadzoneValueDisplay = document.getElementById('deadzoneValue');
+const sensitivitySlider = document.getElementById('sensitivitySlider');
+const triggerCurveSlider = document.getElementById('triggerCurveSlider');
+const presetProfile = document.getElementById('presetProfile');
+
+toggleBtn?.addEventListener('click', () => {
+  const isVisible = advancedPanel.style.display === 'block';
+  advancedPanel.style.display = isVisible ? 'none' : 'block';
+  toggleBtn.textContent = isVisible ? 'Avançado' : 'Básico';
+});
+
+// Atualização em tempo real
 function updateDashboard(){
-  document.getElementById('deadzoneValue').textContent = deadzone.value;
-  document.getElementById('driftValue').textContent = drift.value;
-  document.getElementById('sensitivityValue').textContent = document.getElementById('sensitivitySlider').value;
-  document.getElementById('triggerCurveValue').textContent = document.getElementById('triggerCurveSlider').value;
+  driftValueDisplay.textContent = drift.value;
+  deadzoneValueDisplay.textContent = deadzone.value;
   requestAnimationFrame(updateDashboard);
 }
 updateDashboard();
+
+sensitivitySlider.addEventListener('input', (e) => applySensitivity(e.target.value));
+triggerCurveSlider.addEventListener('input', (e) => applyTriggerCurve(e.target.value));
+presetProfile.addEventListener('change', (e) => applyPresetProfile(e.target.value));
+
+function applySensitivity(val){
+  console.log("Sensibilidade aplicada:", val);
+}
+
+function applyTriggerCurve(val){
+  console.log("Curva do gatilho aplicada:", val);
+}
+
+function applyPresetProfile(preset){
+  console.log("Perfil selecionado:", preset);
+  switch(preset){
+    case 'fps': applySensitivity(8); applyTriggerCurve(60); break;
+    case 'racing': applySensitivity(5); applyTriggerCurve(30); break;
+    case 'fight': applySensitivity(7); applyTriggerCurve(50); break;
+  }
+}
