@@ -109,6 +109,11 @@ function updateButtons(gp, map){
   setActive("l1", pressed(gp.buttons[map.l1]));
   setActive("r1", pressed(gp.buttons[map.r1]));
 
+  // L2/R2
+  setActive("l2", pressed(gp.buttons[map.l2]));
+  setActive("r2", pressed(gp.buttons[map.r2]));
+
+
   // L3/R3
   setActive("l3", pressed(gp.buttons[map.l3]));
   setActive("r3", pressed(gp.buttons[map.r3]));
