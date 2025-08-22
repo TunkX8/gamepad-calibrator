@@ -7,11 +7,17 @@
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <header>
-    <h1>🎮 Calibrador de Controle</h1>
+  <header class="header-container">
+  <h1>🎮 Calibrador de Controle</h1>
+
+  <div class="header-buttons">
     <a class="donate-btn" target="_blank"
        href="https://www.paypal.com/donate/?hosted_button_id=KCEK7FJ3H36TL">💖 Apoie o Projeto</a>
-  </header>
+
+    <button id="toggleAdvanced" class="advanced-btn">Avançado</button>
+  </div>
+</header>
+
 
   <section id="status">
     <p>Status: <span id="connection-status">Aguardando controle...</span></p>
@@ -94,8 +100,7 @@
     <p>Projeto aberto por <strong>TunkX8</strong></p>
   </footer>
 
-  <script src="script.js"></script>  
-<!-- Menu Avançado Apocalipse 2.0 -->
+  <!-- Menu Avançado Apocalipse 2.0 -->
 <div id="advancedMenuContainer" style="margin-top:20px;">
   <button id="toggleAdvanced" style="padding:10px 20px; cursor:pointer; font-weight:bold;">Avançado</button>
 
@@ -125,5 +130,8 @@
 
   </div>
 </div>
+
+  <script src="script.js"></script>  
+
 </body>
 </html>
