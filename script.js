@@ -1,7 +1,9 @@
-// ====== Conexão e detecção de perfil ======
-let currentProfile = "ps"; // padrão
+// ====== Conexão e detecção ======
+let currentProfile = "ps"; // ps | xbox | switch | generic
+
 window.addEventListener("gamepadconnected", (e) => {
   const gp = navigator.getGamepads()[e.gamepad.index];
+  console.log("Gamepad conectado:", gp.id);
   document.getElementById("connection-status")?.textContent = `Conectado: ${gp.id}`;
   currentProfile = detectProfile(gp.id);
   applyLabels(currentProfile);
@@ -9,10 +11,12 @@ window.addEventListener("gamepadconnected", (e) => {
 });
 
 window.addEventListener("gamepaddisconnected", () => {
+  console.log("Gamepad desconectado");
   document.getElementById("connection-status")?.textContent = "Aguardando controle...";
 });
 
-function detectProfile(id="") {
+// ====== Detecta perfil do controle ======
+function detectProfile(id = "") {
   const s = id.toLowerCase();
   if (s.includes("xbox")) return "xbox";
   if (s.includes("dualsense") || s.includes("dualshock") || s.includes("wireless controller")) return "ps";
@@ -20,6 +24,7 @@ function detectProfile(id="") {
   return "generic";
 }
 
+// ====== Aplica labels visuais ======
 function applyLabels(profile){
   const tri = document.getElementById("btn-triangle");
   const cir = document.getElementById("btn-circle");
@@ -39,14 +44,14 @@ function applyLabels(profile){
     tri.textContent = "X"; cir.textContent = "A"; cro.textContent = "B"; sqr.textContent = "Y";
     share.textContent = "−"; options.textContent = "+"; touch.textContent = "Home"; ps.textContent = "Capture";
     mic.style.display = "none";
-  } else {
+  } else { // PS ou genérico
     tri.textContent = "△"; cir.textContent = "◯"; cro.textContent = "✕"; sqr.textContent = "□";
     share.textContent = "Share"; options.textContent = "Options"; touch.textContent = "Touch"; ps.textContent = "PS";
-    mic.style.display = "";
+    mic.style.display = ""; // visível
   }
 }
 
-// ====== Mapeamento de botões por perfil ======
+// ====== Mapeamento dos botões ======
 function mappingFor(profile){
   const base = {
     l1:4, r1:5, l2:6, r2:7, l3:10, r3:11,
@@ -66,7 +71,6 @@ function loop(){
     updateButtons(gp, map);
     updateSticks(gp);
     updateTriggersPercent(gp, map);
-    updateBattery(gp);
   }
   requestAnimationFrame(loop);
 }
@@ -85,43 +89,48 @@ function pressed(btn){
 
 // ====== Atualiza botões ======
 function updateButtons(gp, map){
+  // L1/R1
   setActive("l1", pressed(gp.buttons[map.l1]));
   setActive("r1", pressed(gp.buttons[map.r1]));
+  // L2/R2
   setActive("l2", pressed(gp.buttons[map.l2]));
   setActive("r2", pressed(gp.buttons[map.r2]));
+  // L3/R3
   setActive("l3", pressed(gp.buttons[map.l3]));
   setActive("r3", pressed(gp.buttons[map.r3]));
+  // Centro
   setActive("share", pressed(gp.buttons[map.share]));
   setActive("options", pressed(gp.buttons[map.options]));
   if(gp.buttons[map.ps]) setActive("ps", pressed(gp.buttons[map.ps]));
   if(gp.buttons[map.touch]) setActive("touch", pressed(gp.buttons[map.touch]));
+  // MIC
   if(map.mic !== null && gp.buttons[map.mic]) setActive("mic", pressed(gp.buttons[map.mic]));
   else setActive("mic", false);
-
-  setActive("dpad-up",    pressed(gp.buttons[map.dpad.up]));
-  setActive("dpad-down",  pressed(gp.buttons[map.dpad.down]));
-  setActive("dpad-left",  pressed(gp.buttons[map.dpad.left]));
+  // D-Pad
+  setActive("dpad-up", pressed(gp.buttons[map.dpad.up]));
+  setActive("dpad-down", pressed(gp.buttons[map.dpad.down]));
+  setActive("dpad-left", pressed(gp.buttons[map.dpad.left]));
   setActive("dpad-right", pressed(gp.buttons[map.dpad.right]));
-
+  // Botões de ação
   setActive("btn-square", pressed(gp.buttons[map.actions.square]));
-  setActive("btn-cross",  pressed(gp.buttons[map.actions.cross]));
+  setActive("btn-cross", pressed(gp.buttons[map.actions.cross]));
   setActive("btn-circle", pressed(gp.buttons[map.actions.circle]));
   setActive("btn-triangle", pressed(gp.buttons[map.actions.triangle]));
 }
 
-// ====== Triggers ======
+// ====== Atualiza triggers ======
 function updateTriggersPercent(gp, map){
   const l2Val = gp.buttons[map.l2]?.value || 0;
   const r2Val = gp.buttons[map.r2]?.value || 0;
-  document.getElementById("l2-percent").textContent = Math.round(l2Val*100) + "%";
-  document.getElementById("r2-percent").textContent = Math.round(r2Val*100) + "%";
+  document.getElementById("l2-percent").textContent = Math.round(l2Val*100)+"%";
+  document.getElementById("r2-percent").textContent = Math.round(r2Val*100)+"%";
   document.getElementById("l2-bar").style.width = `${l2Val*100}%`;
   document.getElementById("r2-bar").style.width = `${r2Val*100}%`;
 }
 
 // ====== Analógicos ======
 function updateSticks(gp){
-  drawStick("left-stick",  gp.axes[0], gp.axes[1]);
+  drawStick("left-stick", gp.axes[0], gp.axes[1]);
   drawStick("right-stick", gp.axes[2], gp.axes[3]);
 }
 
@@ -131,79 +140,21 @@ function drawStick(id, x, y){
   const ctx = c.getContext("2d");
   const W = c.width, H = c.height;
   ctx.clearRect(0,0,W,H);
-  const dz = parseFloat(document.getElementById("deadzone").value || "0.05");
-  const drift = parseFloat(document.getElementById("drift").value || "0");
+
+  const dz = parseFloat(document.getElementById("deadzone")?.value || "0.05");
+  const drift = parseFloat(document.getElementById("drift")?.value || "0");
+
   const ax = Math.abs(x) < dz ? 0 : x;
   const ay = Math.abs(y) < dz ? 0 : y + drift;
 
-  // Fundo
   ctx.beginPath();
   ctx.arc(W/2, H/2, W/2 - 6, 0, Math.PI*2);
   ctx.strokeStyle = "#5af2f2";
   ctx.lineWidth = 3;
   ctx.stroke();
 
-  // Indicador
   ctx.beginPath();
-  ctx.arc(W/2 + ax*(W/2 - 12), H/2 + ay*(H/2 - 12), 10, 0, Math.PI*2);
+  ctx.arc(W/2 + ax*(W/2-12), H/2 + ay*(H/2-12), 10, 0, Math.PI*2);
   ctx.fillStyle = "#3ae03a";
   ctx.fill();
 }
-
-// ====== Bateria ======
-function updateBattery(gp){
-  const el = document.getElementById("battery-level");
-  try{
-    if (gp && gp.battery && typeof gp.battery.level === "number"){
-      el.textContent = Math.round(gp.battery.level * 100) + "%";
-    } else {
-      el.textContent = "--%";
-    }
-  } catch { el.textContent = "--%"; }
-}
-
-// ====== Perfis ======
-const deadzone = document.getElementById("deadzone");
-const drift = document.getElementById("drift");
-const saveBtn = document.getElementById("save-profile");
-const loadBtn = document.getElementById("load-profile");
-const exportBtn = document.getElementById("export-profile");
-const fileInput = document.getElementById("file-input");
-
-saveBtn.addEventListener("click", () => {
-  const profile = { deadzone: deadzone.value, drift: drift.value };
-  localStorage.setItem("controllerProfile", JSON.stringify(profile));
-  alert("Perfil salvo!");
-});
-
-loadBtn.addEventListener("click", () => fileInput.click());
-
-fileInput.addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = (ev) => {
-    try{
-      const profile = JSON.parse(ev.target.result);
-      if(profile.deadzone) deadzone.value = profile.deadzone;
-      if(profile.drift) drift.value = profile.drift;
-    }catch{}
-  };
-  reader.readAsText(file);
-});
-
-exportBtn.addEventListener("click", () => {
-  const profile = { deadzone: deadzone.value, drift: drift.value };
-  const blob = new Blob([JSON.stringify(profile)], { type:"application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url; a.download = "profile.json"; a.click();
-  setTimeout(()=>URL.revokeObjectURL(url), 1000);
-});
-
-// ====== Configurações em tempo real ======
-deadzone.addEventListener('input', () => document.getElementById('deadzoneValue').textContent = deadzone.value);
-drift.addEventListener('input', () => document.getElementById('driftValue').textContent = drift.value);
-document.getElementById('sensitivitySlider')?.addEventListener('input', (e) => document.getElementById('sensitivityValue').textContent = e.target.value);
-document.getElementById('triggerCurveSlider')?.addEventListener('input', (e) => document.getElementById('triggerCurveValue').textContent = e.target.value);
-document.getElementById('presetProfile')?.addEventListener('change', (e) => console.log("Preset selecionado:", e.target.value));
