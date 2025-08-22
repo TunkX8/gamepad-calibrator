@@ -1,107 +1,148 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calibrador de Controle</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calibrador de Controle</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-<div id="container">
-
-  <!-- Status de Conexão -->
-  <div id="connection-status" class="status">Aguardando controle...</div>
-
-  <!-- Painel Drift + Deadzone -->
-  <div id="driftDeadzoneContainer">
-    <label for="deadzone">Deadzone: <span id="deadzoneValue">0.05</span></label>
-    <input type="range" id="deadzone" min="0" max="1" step="0.01">
-    <label for="drift">Drift: <span id="driftValue">0</span></label>
-    <input type="range" id="drift" min="-1" max="1" step="0.01">
-  </div>
-
-  <!-- Controle Xbox/Genérico Pixel Art -->
-  <div id="controller-xbox" class="controller">
-    <!-- Analógicos -->
-    <canvas id="left-stick" width="100" height="100"></canvas>
-    <canvas id="right-stick" width="100" height="100"></canvas>
-
-    <!-- D-Pad -->
-    <div id="dpad">
-      <div id="dpad-up" class="btn">↑</div>
-      <div id="dpad-left" class="btn">←</div>
-      <div id="dpad-down" class="btn">↓</div>
-      <div id="dpad-right" class="btn">→</div>
+  <header class="header-container">
+    <h1>🎮 Calibrador de Controle</h1>
+    <div class="header-buttons">
+      <a class="donate-btn" target="_blank"
+         href="https://www.paypal.com/donate/?hosted_button_id=KCEK7FJ3H36TL">💖 Apoie o Projeto</a>
+      <button id="toggleAdvanced" class="advanced-btn">Avançado</button>
     </div>
+  </header>
 
-    <!-- Botões de ação -->
-    <div id="actions">
-      <div id="btn-square" class="btn">X</div>
-      <div id="btn-cross" class="btn">A</div>
-      <div id="btn-circle" class="btn">B</div>
-      <div id="btn-triangle" class="btn">Y</div>
+  <!-- Painel de status atualizado -->
+  <section class="status-panel">
+    <div class="status-item">
+      <strong>Conexão:</strong> <span id="connection-status">Aguardando controle...</span>
     </div>
+    <div class="status-item">
+      <strong>Bateria:</strong> <span id="battery-level">--%</span>
+    </div>
+    <div class="status-item">
+      <strong>Tipo:</strong> <span id="connection-type">USB</span>
+    </div>
+    <div class="status-item">
+      <strong>Perfil:</strong> <span id="profile-name">Padrão</span>  
+    </div>
+    <div class="status-item">
+      <strong>Drift:</strong> <span class="driftValue">0</span>
+    </div>
+    <div class="status-item">
+      <strong>Deadzone:</strong> <span class="deadzoneValue">0</span>
+    </div>
+  </section>
 
-    <!-- Triggers L1/R1 + L2/R2 -->
-    <div id="triggers">
-      <div class="trigger">
-        <span>L1</span>
-        <div id="l1" class="btn trigger-btn"></div>
-      </div>
-      <div class="trigger">
-        <span>R1</span>
-        <div id="r1" class="btn trigger-btn"></div>
-      </div>
-      <div class="trigger-analog">
-        <span>L2 <span id="l2-percent">0%</span></span>
-        <div class="bar-bg"><div id="l2-bar" class="bar-fill"></div></div>
-      </div>
-      <div class="trigger-analog">
-        <span>R2 <span id="r2-percent">0%</span></span>
-        <div class="bar-bg"><div id="r2-bar" class="bar-fill"></div></div>
+  <!-- GRID PRINCIPAL — 3 colunas (esq/centro/dir) x 3 linhas (topo/meio/baixo) -->
+  <main class="controller-grid">
+    <!-- Topo: L1 L2 |           | R1 R2 -->
+    <div class="top-left trigger-group">
+      <div id="l1" class="btn pill">L1</div>
+      <div id="l2" class="btn pill">L2</div>
+      <div class="trigger-container">
+        <div class="trigger-bar"><div id="l2-bar"></div></div>
+        <span id="l2-percent">0%</span>
       </div>
     </div>
-    <!-- Centro do controle (PS/Xbox Guide, Touch, Share/Options, Mic) -->
-    <div id="center-buttons">
-      <div id="share" class="btn">View</div>
-      <div id="options" class="btn">Menu</div>
-      <div id="ps" class="btn">Guide</div>
-      <div id="touch" class="btn">Xbox</div>
-      <div id="mic" class="btn">Mic</div>
+    <div class="top-right trigger-group">
+      <div id="r1" class="btn pill">R1</div>
+      <div id="r2" class="btn pill">R2</div>
+      <div class="trigger-container">
+        <div class="trigger-bar"><div id="r2-bar"></div></div>
+        <span id="r2-percent">0%</span>
+      </div>
     </div>
 
-    <!-- Painel de bateria -->
-    <div id="battery">
-      <span>Bateria:</span> <span id="battery-level">--%</span>
+    <!-- Meio-esquerda: D-Pad em cruz -->
+    <div class="dpad" aria-label="D-Pad">
+      <div id="dpad-up"    class="btn dpad-key">▲</div>
+      <div id="dpad-left"  class="btn dpad-key">◀</div>
+      <div id="dpad-right" class="btn dpad-key">▶</div>
+      <div id="dpad-down"  class="btn dpad-key">▼</div>
     </div>
 
-  </div> <!-- Fim controller-xbox -->
+    <!-- Meio-centro: Share | Touch | Options  e abaixo: PS e Mic -->
+    <div class="center-cluster">
+      <div class="center-row">
+        <div id="share"   class="btn pill">Share</div>
+        <div class="touch-ps">
+          <div id="touch" class="btn pill">Touch</div>
+          <div id="ps"    class="btn pill small">PS</div>
+          <div id="mic"   class="btn pill small">Mic</div>
+        </div>
+        <div id="options" class="btn pill">Options</div>
+      </div>
+    </div>
 
-  <!-- Menu avançado -->
-  <div id="advancedPanel" style="display:none;">
-    <button id="toggleAdvanced">Avançado</button>
+    <!-- Meio-direita: Botões de ação em cruz -->
+    <div class="action-cluster" aria-label="Ação">
+      <div id="btn-triangle" class="btn round">△</div>
+      <div id="btn-circle"   class="btn round">◯</div>
+      <div id="btn-cross"    class="btn round">✕</div>
+      <div id="btn-square"   class="btn round">□</div>
+    </div>
+
+    <!-- Baixo-esquerda: Analógico esquerdo -->
+    <div class="stick-left">
+      <canvas id="left-stick" width="140" height="140"></canvas>
+      <div id="l3" class="btn pill">L3</div>      
+    </div>
+
+    <!-- Baixo-direita: Analógico direito -->
+    <div class="stick-right">
+      <canvas id="right-stick" width="140" height="140"></canvas>
+      <div id="r3" class="btn pill">R3</div>
+    </div>
+  </main>
+
+  <!-- Calibração -->
+  <section class="calibration">
+    <label>Dead Zone:
+      <input type="range" id="deadzone" min="0" max="0.3" step="0.01" value="0.05">
+    </label>
+    <label>Drift Compensation:
+      <input type="range" id="drift" min="-0.2" max="0.2" step="0.01" value="0">
+    </label>
+  </section>
+
+  <!-- Menu Avançado -->
+  <div id="advancedPanel" style="display:none; margin-top:15px; padding:15px; border:2px solid #444; border-radius:10px; background-color:#222; color:#fff;">
+    <div class="advanced-section">
+      <strong>Drift:</strong> <span class="driftValue">0</span><br>
+      <strong>Deadzone:</strong> <span class="deadzoneValue">0</span>
+    </div>
+
     <label for="sensitivitySlider">Sensibilidade:</label>
-    <input type="range" id="sensitivitySlider" min="1" max="10" step="1">
-    <label for="triggerCurveSlider">Curva Gatilho:</label>
-    <input type="range" id="triggerCurveSlider" min="0" max="100" step="1">
-    <label for="presetProfile">Preset:</label>
+    <input type="range" id="sensitivitySlider" min="1" max="10" value="5">
+
+    <label for="triggerCurveSlider">Curva do gatilho:</label>
+    <input type="range" id="triggerCurveSlider" min="0" max="100" value="50">
+
+    <label for="presetProfile">Perfil predefinido:</label>
     <select id="presetProfile">
-      <option value="">Selecione</option>
       <option value="fps">FPS</option>
-      <option value="racing">Racing</option>
-      <option value="fight">Fight</option>
+      <option value="racing">Corrida</option>
+      <option value="fight">Luta</option>
     </select>
 
-    <div id="profileActions">
-      <button id="save-profile">Salvar Perfil</button>
-      <button id="load-profile">Importar Perfil</button>
-      <input type="file" id="file-input" style="display:none;">
-      <button id="export-profile">Exportar Perfil</button>
-    </div>
+    <!-- Perfis -->
+    <section class="profiles">
+      <button id="save-profile">💾 Salvar</button>
+      <button id="load-profile">📂 Importar</button>
+      <button id="export-profile">📤 Exportar</button>
+      <input type="file" id="file-input" hidden>
+    </section>
   </div>
 
-</div> <!-- Fim container -->
+  <footer>
+    <p>Projeto aberto por <strong>TunkX8</strong></p>
+  </footer>
 
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

@@ -1,174 +1,234 @@
-/* ===== Reset básico ===== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Arial", sans-serif;
+/* Reset & Base */
+* { margin:0; padding:0; box-sizing:border-box; }
+:root{
+  --c-bg:#000;
+  --c-panel:#111;
+  --c-text:#f0f0f0;
+  --c-neon:#5af2f2;
+  --c-accent:#3ae03a;
+}
+html,body{height:100%;}
+body{
+  font-family:'Segoe UI',system-ui,Arial,Helvetica,sans-serif;
+  background: radial-gradient(circle at 50% -60%, #0a0a0f 0%, #000 60%);
+  color:var(--c-text);
+  display:flex; flex-direction:column; align-items:center;
 }
 
-body {
-  background-color: #111;
-  color: #5af2f2;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 20px;
+/* Header */
+header{
+  width:100%; padding:1rem 2rem; background:var(--c-panel);
+  display:flex; justify-content:space-between; align-items:center;
+  position:sticky; top:0; z-index:10;
+  box-shadow:0 0 15px rgba(0,255,200,.25), inset 0 -2px 0 rgba(90,242,242,.25);
+}
+header h1{ color:var(--c-neon); font-size:1.45rem; display:flex; gap:.5rem; align-items:center; }
+.header-buttons { display:flex; gap:10px; align-items:center; }
+.advanced-btn{
+  padding:8px 16px; cursor:pointer; font-weight:bold;
+  background-color:#444; color:#fff;
+  border:2px solid var(--c-neon); border-radius:6px;
+  transition: all 0.2s;
+}
+.advanced-btn:hover { background-color:var(--c-neon); color:#222; }
+.donate-btn{
+  background:linear-gradient(90deg,var(--c-neon),var(--c-accent));
+  color:#111; padding:.55rem 1rem; border-radius:12px; text-decoration:none; font-weight:700;
+  box-shadow:0 0 12px rgba(90,242,242,.35);
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.donate-btn:hover{ transform:scale(1.06); box-shadow:0 0 18px rgba(58,224,58,.45); }
+
+/* Status Panel */
+.status-panel{
+  display:flex; gap:20px; justify-content:center; margin:15px 0; flex-wrap:wrap; font-size:14px;
+}
+.status-item{
+  background-color:#222; color:#fff;
+  padding:8px 12px; border-radius:8px; border:1px solid #444;
+  text-align:center; min-width:100px;
 }
 
-#container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
+/* Controller Grid */
+.controller-grid{
+  width:100%; max-width:1200px;
+  display:grid;
+  grid-template-columns: minmax(300px,1fr) minmax(180px,.6fr) minmax(300px,1fr);
+  grid-template-rows: auto auto auto;
+  column-gap:2.25rem; row-gap:1.25rem;
+  padding:2rem 2rem 0;
+  align-items:center; justify-items:center;
 }
 
-/* ===== Controle ===== */
-.controller-xbox, .controller-ps {
-  position: relative;
-  width: 500px;
-  height: 250px;
-  background: #222;
-  border-radius: 30px;
-  box-shadow: 0 0 20px #0ff inset, 0 0 10px #000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* Topo: L1/L2 e R1/R2 com estilo real */
+.trigger-group{
+  position:relative; display:flex; flex-direction:column; align-items:center; gap:6px;
+}
+.trigger-group .btn { width:60px; height:35px; font-size:0.9rem; }
+.trigger-bar{
+  width:60px; height:8px; background:#111; border-radius:6px; margin-top:4px;
+  position:relative;
+  box-shadow: inset 0 0 6px rgba(90,242,242,.2);
+}
+.trigger-bar div{
+  height:100%; width:0%; background:var(--c-accent); border-radius:6px;
+  transition: width 0.1s linear;
+}
+#l1{ order:0; }
+#l2{ order:1; }
+#r1{ order:0; }
+#r2{ order:1; }
+
+/* Posicionamento topo */
+.top-left { grid-column:1; grid-row:1; justify-self:start; }
+.top-right{ grid-column:3; grid-row:1; justify-self:end; }
+
+/* D-Pad */
+.dpad{
+  grid-column:1; grid-row:2;
+  display:grid; grid-template-columns:60px 60px 60px;
+  grid-template-rows:60px 60px 60px; gap:8px;
+  align-items:center; justify-items:center;
+}
+.dpad-key{ width:60px; height:60px; border-radius:12px; font-size:1.05rem; display:flex; align-items:center; justify-content:center; }
+#dpad-up    { grid-column:2; grid-row:1; }
+#dpad-left  { grid-column:1; grid-row:2; }
+#dpad-right { grid-column:3; grid-row:2; }
+#dpad-down  { grid-column:2; grid-row:3; }
+
+/* Centro: Share | Touch | Options | PS/Mic */
+.center-cluster{ grid-column:2; grid-row:2; width:100%; }
+.center-row{ display:grid; grid-template-columns: 1fr auto 1fr; align-items:center; column-gap:1.25rem; }
+.touch-ps{ display:flex; flex-direction:column; align-items:center; gap:.6rem; }
+#ps, #mic{ font-size:0.85rem; padding:.35rem .6rem; }
+#mic{ display:none; }
+
+/* Ação */
+.action-cluster{
+  grid-column:3; grid-row:2;
+  display:grid;
+  grid-template-columns:70px 70px 70px;
+  grid-template-rows:70px 70px 70px;
+  gap:10px; justify-items:center; align-items:center;
+}
+#btn-triangle{ grid-column:2; grid-row:1; }
+#btn-circle  { grid-column:3; grid-row:2; }
+#btn-cross   { grid-column:2; grid-row:3; }
+#btn-square  { grid-column:1; grid-row:2; }
+
+/* Analógicos */
+.stick-left { grid-column:1; grid-row:3; justify-self:center; transform:translateX(20px); }
+.stick-right{ grid-column:3; grid-row:3; justify-self:center; transform:translateX(-20px); }
+canvas{ background:#141414; border-radius:50%; box-shadow: inset 0 0 20px rgba(90,242,242,.25), 0 0 10px rgba(90,242,242,.2); }
+
+/* Botão genérico */
+.btn{
+  border:2px solid var(--c-neon); background:#1a1a1a;
+  color:var(--c-text); text-shadow:0 0 6px rgba(90,242,242,.45);
+  box-shadow:0 0 10px rgba(90,242,242,.25);
+  padding:.5rem .9rem; user-select:none;
+  display:flex; align-items:center; justify-content:center;
+  transition: all 0.15s ease;
+}
+.btn.pill{ border-radius:12px; }
+.btn.small{ font-size:.85rem; padding:.35rem .6rem; }
+.btn.round{ width:60px; height:60px; border-radius:50%; font-size:1.2rem; }
+.btn.active{ background:var(--c-accent); color:#111; box-shadow:0 0 14px var(--c-accent); }
+
+/* Calibração & Perfis */
+.calibration{
+  margin:1.5rem 0; padding:1rem; width:100%; max-width:560px;
+  background:rgba(255,255,255,.045); border-radius:14px;
+  display:flex; flex-direction:column; gap:.9rem;
+  box-shadow:0 0 10px rgba(90,242,242,.18);
+}
+.calibration input[type="range"]{ width:100%; }
+.profiles{ display:flex; gap:1rem; justify-content:center; margin-bottom:2rem; }
+.profiles button{
+  border:2px solid var(--c-neon); background:#1a1a1a; color:var(--c-text);
+  padding:.55rem 1rem; border-radius:12px; cursor:pointer;
+  box-shadow:0 0 10px rgba(90,242,242,.25);
+}
+.profiles button:hover{ background:var(--c-accent); color:#111; box-shadow:0 0 15px var(--c-accent); }
+
+/* Footer */
+footer{
+  margin-top:auto; width:100%; text-align:center; padding:1rem; background:#111;
+  color:var(--c-neon); font-size:.9rem;
+}
+/* Responsivo fino */
+@media (max-width: 980px){
+  .controller-grid{
+    grid-template-columns: 1fr 140px 1fr;
+    column-gap:1.25rem;
+  }
+  .action-cluster{ grid-template-columns: 64px 64px 64px; grid-template-rows:64px 64px 64px; }
+  .dpad{ grid-template-columns:56px 56px 56px; grid-template-rows:56px 56px 56px; }
+  .btn.round{ width:56px; height:56px; }
 }
 
-/* ===== Sticks ===== */
-.stick {
-  width: 80px;
-  height: 80px;
-  background: #111;
-  border: 3px solid #5af2f2;
-  border-radius: 50%;
-  position: absolute;
+@media (max-width: 760px){
+  .controller-grid{
+    grid-template-columns: 1fr;
+    grid-template-rows:auto auto auto auto auto;
+    row-gap:1.25rem; justify-items:center;
+  }
+  .top-left, .top-right{ justify-self:center; }
+  .center-cluster{ grid-column:1; }
+  .action-cluster, .dpad, .stick-left, .stick-right{ grid-column:1; transform:none; }
 }
 
-#left-stick {
-  left: 60px;
-  top: 120px;
+/* Advanced Panel */
+#advancedPanel {
+  display: none;
+  transition: all 0.4s ease;
 }
-
-#right-stick {
-  right: 60px;
-  top: 120px;
+#advancedPanel strong {
+  color: #f5f5f5;
 }
-
-/* ===== D-Pad ===== */
-.dpad {
-  position: absolute;
-  display: grid;
-  grid-template-areas:
-    "up up up"
-    "left . right"
-    "down down down";
-  gap: 4px;
-  width: 80px;
-  height: 80px;
-}
-
-.dpad div {
-  background: #222;
-  border: 2px solid #5af2f2;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #5af2f2;
+#advancedMenuContainer button {
+  background-color: #ff4500;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
   font-weight: bold;
-  font-size: 14px;
-  border-radius: 4px;
+}
+#advancedMenuContainer button:hover {
+  background-color: #e63900;
 }
 
-#dpad-up { grid-area: up; }
-#dpad-down { grid-area: down; }
-#dpad-left { grid-area: left; }
-#dpad-right { grid-area: right; }
-/* ===== Botões de ação (PS5/Xbox) ===== */
-.action-btn {
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  background: #111;
-  border: 3px solid #5af2f2;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 18px;
-  color: #5af2f2;
-  font-weight: bold;
+/* Trigger Percent Text */
+#l2-percent, #r2-percent {
+  font-size:0.85rem; margin-top:4px; color:var(--c-neon);
 }
 
-#btn-cross { bottom: 100px; right: 60px; }
-#btn-circle { bottom: 140px; right: 20px; }
-#btn-square { bottom: 140px; right: 100px; }
-#btn-triangle { bottom: 180px; right: 60px; }
-
-/* ===== Triggers / L1 R1 L2 R2 ===== */
-.trigger {
-  position: absolute;
-  width: 60px;
-  height: 20px;
-  background: #222;
-  border: 2px solid #5af2f2;
-  border-radius: 10px;
-}
-
-#l1 { top: 10px; left: 50px; }
-#r1 { top: 10px; right: 50px; }
-#l2 { top: 40px; left: 50px; }
-#r2 { top: 40px; right: 50px; }
-
-/* ===== Barra de triggers ===== */
+/* Melhor visual para barra de gatilho */
 .trigger-bar {
-  position: absolute;
-  height: 6px;
-  background: #3ae03a;
-  border-radius: 3px;
-  top: 8px;
+  width: 60px; height: 8px; background:#111; border-radius:6px; margin-top:4px;
+  position:relative; box-shadow: inset 0 0 6px rgba(90,242,242,.2);
+}
+.trigger-bar div {
+  height:100%; width:0%; background:var(--c-accent); border-radius:6px;
+  transition: width 0.1s linear;
 }
 
-#l2-bar { left: 0; width: 0%; }
-#r2-bar { right: 0; width: 0%; }
+/* Tooltip ou indicação de botão MIC */
+#mic.active { display:block; background:var(--c-neon); color:#000; }
 
-/* ===== Centro do controle ===== */
-.center-btn {
-  position: absolute;
-  width: 60px;
-  height: 60px;
-  background: #111;
-  border: 3px solid #5af2f2;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  color: #5af2f2;
-}
+/* Pequenos ajustes de hover */
+.btn:hover { transform: scale(1.05); box-shadow:0 0 15px rgba(58,224,58,.3); }
 
-#share { left: 210px; top: 80px; }
-#options { right: 210px; top: 80px; }
-#ps { left: 220px; top: 130px; }
-#touch { right: 220px; top: 130px; }
-#mic { left: 240px; top: 180px; }
+/* Stick Canvas */
+canvas { cursor: crosshair; }
 
-/* ===== Drift e Deadzone juntos ===== */
-#driftDeadzoneContainer {
-  width: 500px;
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  margin-top: 20px;
-  color: #5af2f2;
-}
+/* Deadzone/Drift Label */
+#deadzoneValue, #driftValue { color:var(--c-accent); font-weight:bold; }
 
-#driftDeadzoneContainer input[type="range"] {
+/* Input Range estilo neon */
+input[type="range"] {
   -webkit-appearance: none;
   -moz-appearance: none;
-  width: 220px;
+  width: 100%;
   height: 6px;
   border-radius: 3px;
   background: #222;
@@ -176,151 +236,40 @@ body {
   box-shadow: inset 0 0 4px rgba(90,242,242,.2);
 }
 
-#driftDeadzoneContainer input[type="range"]::-webkit-slider-thumb {
+/* Thumb - Webkit (Chrome, Safari) */
+input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 16px;
-  height: 16px;
-  background: #3ae03a;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
+  background: #5af2f2;
+  box-shadow: 0 0 8px #5af2f2, 0 0 16px #3ae03a;
+  cursor: pointer;
+  margin-top: -7px; /* centraliza no trilho */
+}
+
+/* Thumb - Firefox */
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #5af2f2;
+  box-shadow: 0 0 8px #5af2f2, 0 0 16px #3ae03a;
   cursor: pointer;
 }
 
-#driftDeadzoneContainer input[type="range"]::-moz-range-thumb {
-  width: 16px;
-  height: 16px;
-  background: #3ae03a;
-  border-radius: 50%;
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px; height: 16px; border-radius:50%;
+  background: var(--c-accent);
   cursor: pointer;
+  box-shadow: 0 0 6px var(--c-neon);
+  transition: all 0.15s ease;
 }
-
-/* ===== Texto dos sliders ===== */
-#driftValue, #deadzoneValue {
-  font-weight: bold;
-  width: 40px;
-  text-align: center;
-}
-/* ===== Pixel Art - Corpo do controle ===== */
-.controller-body {
-  position: relative;
-  width: 500px;
-  height: 220px;
-  background: #111;
-  border-radius: 60px / 30px;
-  border: 4px solid #5af2f2;
-  box-shadow:
-    0 0 10px #5af2f2,
-    inset 0 0 20px rgba(58, 224, 58, 0.2);
-}
-
-/* ===== Detalhes laterais (grips) ===== */
-.controller-grip-left,
-.controller-grip-right {
-  position: absolute;
-  width: 60px;
-  height: 160px;
-  background: #111;
-  border-radius: 30px;
-  top: 30px;
-  box-shadow: inset 0 0 10px rgba(90,242,242,.2);
-}
-
-.controller-grip-left { left: -20px; transform: rotate(-10deg); }
-.controller-grip-right { right: -20px; transform: rotate(10deg); }
-
-/* ===== Detalhes botões PS/Xbox ===== */
-.controller-button {
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  background: #111;
-  border: 2px solid #3ae03a;
-  border-radius: 4px;
-  font-size: 12px;
-  text-align: center;
-  line-height: 18px;
-  color: #3ae03a;
-  font-weight: bold;
-}
-
-/* Exemplos de botões top (botões de ação) */
-#btn-square, #btn-cross, #btn-circle, #btn-triangle {
-  border-radius: 50%; /* mais arredondado */
-  font-size: 16px;
-  width: 36px;
-  height: 36px;
-  line-height: 36px;
-  box-shadow: 0 0 4px #5af2f2;
-}
-
-/* ===== Analógicos pixelados ===== */
-.stick {
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  background: #222;
-  border-radius: 50%;
-  border: 3px solid #3ae03a;
-  box-shadow:
-    0 0 4px #3ae03a,
-    inset 0 0 6px rgba(58,224,58,0.3);
-}
-
-#left-stick { left: 100px; bottom: 60px; }
-#right-stick { right: 100px; bottom: 60px; }
-
-/* ===== D-Pad ===== */
-.dpad {
-  position: absolute;
-  width: 60px;
-  height: 60px;
-  display: grid;
-  grid-template-rows: repeat(3, 1fr);
-  grid-template-columns: repeat(3, 1fr);
-  gap: 4px;
-}
-
-.dpad div {
-  background: #111;
-  border: 2px solid #3ae03a;
-  box-shadow: 0 0 3px #5af2f2;
-}
-
-#dpad-up { grid-area: 1 / 2 / 2 / 3; }
-#dpad-left { grid-area: 2 / 1 / 3 / 2; }
-#dpad-right { grid-area: 2 / 3 / 3 / 4; }
-#dpad-down { grid-area: 3 / 2 / 4 / 3; }
-
-/* ===== Centro neon ===== */
-.center-glow {
-  position: absolute;
-  width: 70px;
-  height: 70px;
-  background: #111;
-  border-radius: 50%;
-  top: 80px;
-  left: 215px;
-  border: 3px solid #3ae03a;
-  box-shadow:
-    0 0 10px #3ae03a,
-    inset 0 0 8px rgba(58,224,58,0.3);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #3ae03a;
-  font-weight: bold;
-}
-
-/* ===== Pixel art final - barra e glow ===== */
-.trigger-bar {
-  border-radius: 3px;
-  background: linear-gradient(90deg, #3ae03a, #5af2f2);
-  box-shadow: 0 0 6px #3ae03a;
-}
-
-.action-btn.active,
-.stick.active,
-.center-glow.active,
-.dpad div.active {
-  background: #3ae03a;
-  box-shadow: 0 0 10px #5af2f2, inset 0 0 8px rgba(58,224,58,0.5);
+input[type="range"]::-moz-range-thumb {
+  width: 16px; height:16px; border-radius:50%;
+  background: var(--c-accent);
+  cursor: pointer;
+  box-shadow: 0 0 6px var(--c-neon);
+  transition: all 0.15s ease;
 }
