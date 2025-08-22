@@ -7,118 +7,63 @@
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <header class="header-container">
+  <header>
     <h1>🎮 Calibrador de Controle</h1>
-    <div class="header-buttons">
-      <a class="donate-btn" target="_blank"
-         href="https://www.paypal.com/donate/?hosted_button_id=KCEK7FJ3H36TL">💖 Apoie o Projeto</a>
-    </div>
+    <a class="donate-btn" target="_blank" href="https://www.paypal.com/donate/?hosted_button_id=KCEK7FJ3H36TL">💖 Apoie o Projeto</a>
   </header>
 
-  <main class="main-container">
-    <!-- Representação do Controle -->
-    <div class="controller-container">
-      <div class="controller-grid">
-        <!-- Topo: L1 L2 | R1 R2 -->
-        <div class="top-left trigger-group">
-          <div id="l1" class="btn pill">L1</div>
-          <div id="l2" class="btn pill">L2</div>
-          <div class="trigger-container">
-            <div class="trigger-bar"><div id="l2-bar"></div></div>
-            <span id="l2-percent">0%</span>
-          </div>
-        </div>
-        <div class="top-right trigger-group">
-          <div id="r1" class="btn pill">R1</div>
-          <div id="r2" class="btn pill">R2</div>
-          <div class="trigger-container">
-            <div class="trigger-bar"><div id="r2-bar"></div></div>
-            <span id="r2-percent">0%</span>
-          </div>
-        </div>
+  <main>
+    <!-- Display do gamepad -->
+    <div class="controller">
+      <div class="buttons">
+        <div id="btn-cross" class="btn">✕</div>
+        <div id="btn-circle" class="btn">◯</div>
+        <div id="btn-square" class="btn">□</div>
+        <div id="btn-triangle" class="btn">△</div>
+        <div id="l1" class="btn small">L1</div>
+        <div id="r1" class="btn small">R1</div>
+        <div id="l2" class="btn small">L2</div>
+        <div id="r2" class="btn small">R2</div>
+        <div id="dpad-up" class="btn small">▲</div>
+        <div id="dpad-down" class="btn small">▼</div>
+        <div id="dpad-left" class="btn small">◀</div>
+        <div id="dpad-right" class="btn small">▶</div>
+        <div id="share" class="btn tiny">Share</div>
+        <div id="options" class="btn tiny">Options</div>
+        <div id="ps" class="btn tiny">PS</div>
+        <div id="touch" class="btn tiny">Touch</div>
+        <div id="mic" class="btn tiny">Mic</div>
+      </div>
 
-        <!-- D-Pad -->
-        <div class="dpad">
-          <div id="dpad-up"    class="btn dpad-key">▲</div>
-          <div id="dpad-left"  class="btn dpad-key">◀</div>
-          <div id="dpad-right" class="btn dpad-key">▶</div>
-          <div id="dpad-down"  class="btn dpad-key">▼</div>
-        </div>
+      <!-- Triggers -->
+      <div class="triggers">
+        <div>L2: <span id="l2-percent">0%</span> <div id="l2-bar" class="bar"></div></div>
+        <div>R2: <span id="r2-percent">0%</span> <div id="r2-bar" class="bar"></div></div>
+      </div>
 
-        <!-- Botões de ação -->
-        <div class="action-cluster">
-          <div id="btn-triangle" class="btn round">△</div>
-          <div id="btn-circle"   class="btn round">◯</div>
-          <div id="btn-cross"    class="btn round">✕</div>
-          <div id="btn-square"   class="btn round">□</div>
-        </div>
-
-        <!-- Centro: Share, Options, Touch, PS, Mic -->
-        <div class="center-cluster">
-          <div id="share"   class="btn pill">Share</div>
-          <div id="options" class="btn pill">Options</div>
-          <div class="touch-ps">
-            <div id="touch" class="btn pill">Touch</div>
-            <div id="ps"    class="btn pill small">PS</div>
-            <div id="mic"   class="btn pill small">Mic</div>
-          </div>
-        </div>
-
-        <!-- Analógicos -->
-        <div class="stick-left">
-          <canvas id="left-stick" width="120" height="120"></canvas>
-          <div id="l3" class="btn pill">L3</div>
-        </div>
-        <div class="stick-right">
-          <canvas id="right-stick" width="120" height="120"></canvas>
-          <div id="r3" class="btn pill">R3</div>
-        </div>
+      <!-- Analógicos -->
+      <div class="sticks">
+        <canvas id="left-stick" width="120" height="120"></canvas>
+        <canvas id="right-stick" width="120" height="120"></canvas>
       </div>
     </div>
 
-    <!-- Barra lateral direita: Configurações -->
+    <!-- Configurações -->
     <aside class="sidebar">
       <h2>Configurações</h2>
-
-      <div class="config-item">
-        <label>Deadzone: <span id="deadzoneValue">0.05</span></label>
+      <label>Deadzone: <span id="deadzoneValue">0.05</span>
         <input type="range" id="deadzone" min="0" max="0.3" step="0.01" value="0.05">
-      </div>
-
-      <div class="config-item">
-        <label>Drift: <span id="driftValue">0</span></label>
+      </label>
+      <label>Drift: <span id="driftValue">0</span>
         <input type="range" id="drift" min="-0.2" max="0.2" step="0.01" value="0">
-      </div>
-
-      <div class="config-item">
-        <label>Sensibilidade: <span id="sensitivityValue">5</span></label>
-        <input type="range" id="sensitivitySlider" min="1" max="10" value="5">
-      </div>
-
-      <div class="config-item">
-        <label>Curva do gatilho: <span id="triggerCurveValue">50</span></label>
-        <input type="range" id="triggerCurveSlider" min="0" max="100" value="50">
-      </div>
-
-      <div class="config-item">
-        <label for="presetProfile">Perfil predefinido:</label>
-        <select id="presetProfile">
-          <option value="fps">FPS</option>
-          <option value="racing">Corrida</option>
-          <option value="fight">Luta</option>
-        </select>
-      </div>
-
-      <div class="config-actions">
-        <button id="resetSettings">Redefinir</button>
-        <button id="save-profile">💾 Salvar</button>
-        <button id="load-profile">📂 Importar</button>
-        <button id="export-profile">📤 Exportar</button>
-        <input type="file" id="file-input" hidden>
-      </div>
+      </label>
     </aside>
   </main>
 
   <footer>
     <p>Projeto aberto por <strong>TunkX8</strong></p>
   </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
