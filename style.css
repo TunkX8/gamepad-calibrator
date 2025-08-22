@@ -1,97 +1,341 @@
-/* ====== Estilos base para o layout de controle ====== */
-
-body {
+/* ===== Reset e base ===== */
+* {
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #001f3f, #004d40, #660000);
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-header.header-container {
-  padding: 10px 20px;
+body {
+  background: linear-gradient(135deg, #0d0d25, #0d0d25);
+  color: #fff;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(0,0,0,0.7);
+  padding: 1rem 2rem;
+  background: rgba(0,0,0,0.8);
+  border-bottom: 2px solid #1f1f3a;
 }
 
-header h1 {
-  font-size: 1.5rem;
+.header-container h1 {
+  font-size: 1.8rem;
+  color: #5af2f2;
+  text-shadow: 0 0 10px #5af2f2;
 }
 
-.donate-btn {
+.header-buttons .donate-btn {
   text-decoration: none;
-  background-color: #ff4081;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 6px;
+  background: #ff3b3b;
+  color: #fff;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
   font-weight: bold;
+  transition: all 0.3s ease;
 }
 
+.header-buttons .donate-btn:hover {
+  box-shadow: 0 0 15px #ff3b3b;
+  transform: translateY(-2px);
+}
+
+/* ===== Container principal ===== */
 .main-container {
-  flex: 1;
   display: flex;
-  padding: 20px;
-  gap: 20px;
+  flex: 1;
+  overflow: hidden;
+  padding: 1rem;
 }
 
+/* ===== Controlador ===== */
 .controller-container {
-  flex: 1;
+  flex: 2;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .controller-grid {
   display: grid;
   grid-template-areas:
     "top-left center-cluster top-right"
-    "dpad action-cluster action-cluster"
-    "stick-left stick-right stick-right";
-  gap: 12px;
+    "dpad action-cluster stick-right"
+    "stick-left . .";
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 1rem;
+  position: relative;
+  max-width: 900px;
 }
 
-/* Topo: gatilhos */
-.top-left { grid-area: top-left; display: flex; flex-direction: column; gap: 6px; align-items: center; }
-.top-right { grid-area: top-right; display: flex; flex-direction: column; gap: 6px; align-items: center; }
-
-.top-left .btn.pill, .top-right .btn.pill {
-  width: 48px;
-  height: 24px;
-  font-size: 14px;
+/* ===== L1/L2 e R1/R2 ===== */
+.trigger-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
 }
 
-/* Centro: Share, Options, Touch, PS, Mic */
-.center-cluster { grid-area: center-cluster; display: flex; flex-direction: column; gap: 6px; align-items: center; }
-.center-cluster .btn.pill { width: 70px; height: 32px; font-size: 16px; }
-.center-cluster .btn.pill.small { width: 36px; height: 28px; font-size: 14px; }
-
-/* D-Pad */
-.dpad { grid-area: dpad; display: grid; grid-template-columns: 40px 40px 40px; grid-template-rows: 40px 40px 40px; gap: 4px; justify-content: center; align-items: center; }
-.dpad-key { width: 36px; height: 36px; font-size: 18px; display: flex; justify-content: center; align-items: center; }
-
-/* Botões de ação */
-.action-cluster { grid-area: action-cluster; display: flex; flex-direction: column; gap: 10px; justify-content: center; align-items: center; }
-.btn.round { width: 50px; height: 50px; font-size: 22px; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
-
-/* Analógicos */
-.stick-left, .stick-right { display: flex; flex-direction: column; align-items: center; justify-content: center; }
-canvas { width: 100px; height: 100px; }
-.stick-left #l3, .stick-right #r3 { width: 38px; height: 26px; font-size: 14px; margin-top: 6px; }
-
-/* Barra lateral direita */
-.sidebar { width: 250px; display: flex; flex-direction: column; gap: 10px; background-color: rgba(0,0,0,0.5); padding: 10px; border-radius: 8px; }
-.config-item { display: flex; flex-direction: column; gap: 4px; }
-.config-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-
-/* Botões de configuração */
-button { background-color: #0055aa; color: white; border: none; border-radius: 6px; padding: 6px 10px; cursor: pointer; }
-button:hover { background-color: #0077cc; }
+.trigger-group .btn {
+  width: 60px;
+  height: 28px;
+  font-size: 0.85rem;
+}
 
 /* Trigger bars */
-.trigger-container { display: flex; align-items: center; gap: 6px; }
-.trigger-bar { width: 70px; height: 6px; background: rgba(255,255,255,0.2); border-radius: 4px; }
-.trigger-bar > div { height: 100%; background: #00ffcc; width: 0%; border-radius: 4px; }
+.trigger-container {
+  width: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.trigger-bar {
+  width: 100%;
+  height: 6px;
+  background: #222;
+  border-radius: 3px;
+  margin-bottom: 3px;
+  overflow: hidden;
+}
+
+.trigger-bar div {
+  height: 100%;
+  width: 0%;
+  background: #5af2f2;
+  border-radius: 3px;
+  transition: width 0.1s ease;
+}
+
+.trigger-container span {
+  font-size: 0.7rem;
+  color: #5af2f2;
+}
+
+/* ===== D-Pad ===== */
+.dpad {
+  display: grid;
+  grid-template-areas:
+    ". up ."
+    "left . right"
+    ". down .";
+  gap: 5px;
+}
+
+.dpad-key {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #111;
+  border: 2px solid #5af2f2;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 1rem;
+  color: #5af2f2;
+  transition: all 0.15s ease;
+}
+
+.dpad-key.active {
+  background: #5af2f2;
+  color: #111;
+  box-shadow: 0 0 15px #5af2f2;
+}
+/* ===== Botões de ação ===== */
+.action-cluster {
+  display: grid;
+  grid-template-columns: repeat(2, 60px);
+  grid-template-rows: repeat(2, 60px);
+  gap: 10px;
+}
+
+.btn.round {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #5af2f2;
+  background: #111;
+  color: #5af2f2;
+  transition: all 0.15s ease;
+}
+
+.btn.round.active {
+  background: #5af2f2;
+  color: #111;
+  box-shadow: 0 0 20px #5af2f2;
+}
+
+/* ===== Centro: Share / Touch / Options / PS / Mic ===== */
+.center-cluster {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.center-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn.pill {
+  padding: 6px 12px;
+  border-radius: 12px;
+  border: 2px solid #5af2f2;
+  background: #111;
+  color: #5af2f2;
+  font-size: 0.8rem;
+  transition: all 0.15s ease;
+}
+
+.btn.pill.small {
+  padding: 4px 8px;
+  font-size: 0.7rem;
+}
+
+.btn.pill.active {
+  background: #5af2f2;
+  color: #111;
+  box-shadow: 0 0 15px #5af2f2;
+}
+
+/* Touch maior */
+.touch-ps {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+}
+
+/* ===== Analógicos ===== */
+.stick-left, .stick-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+canvas {
+  background: #111;
+  border-radius: 50%;
+  border: 2px solid #5af2f2;
+}
+
+.stick-left .btn, .stick-right .btn {
+  width: 50px;
+  height: 28px;
+  font-size: 0.8rem;
+}
+
+/* ===== Barra lateral direita: Configurações ===== */
+.sidebar {
+  flex: 1;
+  padding: 1rem;
+  background: rgba(0,0,0,0.85);
+  border-left: 2px solid #1f1f3a;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: auto;
+}
+
+.sidebar h2 {
+  color: #5af2f2;
+  text-shadow: 0 0 10px #5af2f2;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.config-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.config-item label {
+  font-size: 0.9rem;
+  color: #5af2f2;
+}
+
+.config-item input, .config-item select {
+  width: 100%;
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 1px solid #5af2f2;
+  background: #111;
+  color: #fff;
+}
+
+/* Botões de ação da sidebar */
+.config-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.config-actions button {
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 2px solid #5af2f2;
+  background: #111;
+  color: #5af2f2;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.config-actions button:hover {
+  background: #5af2f2;
+  color: #111;
+  box-shadow: 0 0 15px #5af2f2;
+}
+
+/* ===== Footer ===== */
+footer {
+  padding: 0.5rem 1rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #5af2f2;
+}
+
+/* ===== Neon e transição de fundo ===== */
+@keyframes neonGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+body {
+  background: linear-gradient(270deg, #0038ff, #00ff6a, #ff0000);
+  background-size: 600% 600%;
+  animation: neonGradient 15s ease infinite;
+}
+
+/* Responsividade */
+@media screen and (max-width: 1200px) {
+  .controller-grid {
+    grid-template-areas:
+      "top-left top-right"
+      "dpad action-cluster"
+      "stick-left stick-right"
+      "center-cluster center-cluster";
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sidebar {
+    flex: 1;
+  }
+}
