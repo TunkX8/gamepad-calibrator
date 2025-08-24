@@ -1,17 +1,45 @@
-// ====== Conexão ======
+// ====== Conexão / Perfil ======
 let currentProfile = "ps"; // ps | xbox | switch | generic
+
+function setText(id, text){
+  const el = document.getElementById(id);
+  if(el) el.textContent = text;
+}
 
 window.addEventListener("gamepadconnected", (e) => {
   const gp = navigator.getGamepads()[e.gamepad.index];
-  document.getElementById("connection-status").textContent = `Conectado: ${gp.id}`;
+  setText("connection-status", `Conectado: ${gp.id}`);
   currentProfile = detectProfile(gp.id);
+  setText("profile-name", profileLabel(currentProfile));
   applyLabels(currentProfile);
   loop();
 });
 
 window.addEventListener("gamepaddisconnected", () => {
-  document.getElementById("connection-status").textContent = "Aguardando controle...";
+  setText("connection-status", "Aguardando controle...");
 });
+
+// Ao carregar, tenta detectar um controle já conectado
+window.addEventListener("load", () => {
+  const pads = navigator.getGamepads ? navigator.getGamepads() : [];
+  const gp = pads && pads[0];
+  if (gp && gp.id) {
+    setText("connection-status", `Conectado: ${gp.id}`);
+    currentProfile = detectProfile(gp.id);
+    setText("profile-name", profileLabel(currentProfile));
+    applyLabels(currentProfile);
+    loop();
+  }
+});
+
+function profileLabel(p){
+  switch(p){
+    case "xbox": return "Xbox";
+    case "switch": return "Switch";
+    case "ps": return "PlayStation";
+    default: return "Genérico";
+  }
+}
 
 // ====== Detecta tipo (rótulos/mapeamento) ======
 function detectProfile(id="") {
@@ -34,40 +62,41 @@ function applyLabels(profile){
   const mic = document.getElementById("mic");
 
   if(profile === "xbox"){
-    tri.textContent = "Y";
-    cir.textContent = "B";
-    cro.textContent = "A";
-    sqr.textContent = "X";
-    share.textContent = "View";
-    options.textContent = "Menu";
-    touch.textContent = "Xbox";
-    ps.textContent = "Guide";
-    mic.style.display = "none";
+    if(tri) tri.textContent = "Y";
+    if(cir) cir.textContent = "B";
+    if(cro) cro.textContent = "A";
+    if(sqr) sqr.textContent = "X";
+    if(share) share.textContent = "View";
+    if(options) options.textContent = "Menu";
+    if(touch) touch.textContent = "Xbox";
+    if(ps) ps.textContent = "Guide";
+    if(mic) mic.style.display = "none";
   } else if(profile === "switch"){
-    tri.textContent = "X";
-    cir.textContent = "A";
-    cro.textContent = "B";
-    sqr.textContent = "Y";
-    share.textContent = "−";
-    options.textContent = "+";
-    touch.textContent = "Home";
-    ps.textContent = "Capture";
-    mic.style.display = "none";
+    if(tri) tri.textContent = "X";
+    if(cir) cir.textContent = "A";
+    if(cro) cro.textContent = "B";
+    if(sqr) sqr.textContent = "Y";
+    if(share) share.textContent = "−";
+    if(options) options.textContent = "+";
+    if(touch) touch.textContent = "Home";
+    if(ps) ps.textContent = "Capture";
+    if(mic) mic.style.display = "none";
   } else {
-    tri.textContent = "△";
-    cir.textContent = "◯";
-    cro.textContent = "✕";
-    sqr.textContent = "□";
-    share.textContent = "Share";
-    options.textContent = "Options";
-    touch.textContent = "Touch";
-    ps.textContent = "PS";
-    mic.style.display = ""; // visível
+    if(tri) tri.textContent = "△";
+    if(cir) cir.textContent = "◯";
+    if(cro) cro.textContent = "✕";
+    if(sqr) sqr.textContent = "□";
+    if(share) share.textContent = "Share";
+    if(options) options.textContent = "Options";
+    if(touch) touch.textContent = "Touch";
+    if(ps) ps.textContent = "PS";
+    if(mic) mic.style.display = ""; // visível
   }
 }
 
 // ====== Mapeamento por perfil (índices) ======
 function mappingFor(profile){
+  // Mantive seu base. Se precisar diferenciar por perfil no futuro, ajustamos aqui.
   const base = {
     l1:4, r1:5, l2:6, r2:7, l3:10, r3:11,
     share:8, options:9, ps:16, touch:17,
@@ -105,20 +134,14 @@ function pressed(btn){
 
 // ====== Atualiza botões ======
 function updateButtons(gp, map){
-  // L1/R1
   setActive("l1", pressed(gp.buttons[map.l1]));
   setActive("r1", pressed(gp.buttons[map.r1]));
-
-  // L2/R2
   setActive("l2", pressed(gp.buttons[map.l2]));
   setActive("r2", pressed(gp.buttons[map.r2]));
 
-
-  // L3/R3
   setActive("l3", pressed(gp.buttons[map.l3]));
   setActive("r3", pressed(gp.buttons[map.r3]));
 
-  // Centro
   setActive("share", pressed(gp.buttons[map.share]));
   setActive("options", pressed(gp.buttons[map.options]));
   if(gp.buttons[map.ps])    setActive("ps", pressed(gp.buttons[map.ps]));
@@ -137,24 +160,25 @@ function updateButtons(gp, map){
   setActive("dpad-left",  pressed(gp.buttons[map.dpad.left]));
   setActive("dpad-right", pressed(gp.buttons[map.dpad.right]));
 
-  // Botões de ação
-  setActive("btn-square", pressed(gp.buttons[map.actions.square]));
-  setActive("btn-cross",  pressed(gp.buttons[map.actions.cross]));
-  setActive("btn-circle", pressed(gp.buttons[map.actions.circle]));
+  // Ação
+  setActive("btn-square",   pressed(gp.buttons[map.actions.square]));
+  setActive("btn-cross",    pressed(gp.buttons[map.actions.cross]));
+  setActive("btn-circle",   pressed(gp.buttons[map.actions.circle]));
   setActive("btn-triangle", pressed(gp.buttons[map.actions.triangle]));
 }
 
-// ====== Atualiza triggers com porcentagem ======
+// ====== Triggers com porcentagem ======
 function updateTriggersPercent(gp, map){
   const l2Val = gp.buttons[map.l2]?.value || 0;
   const r2Val = gp.buttons[map.r2]?.value || 0;
-  document.getElementById("l2-percent").textContent = Math.round(l2Val*100) + "%";
-  document.getElementById("r2-percent").textContent = Math.round(r2Val*100) + "%";
-
-  // barra visual
-  document.getElementById("l2-bar").style.width = `${l2Val*100}%`;
-  document.getElementById("r2-bar").style.width = `${r2Val*100}%`;
+  setText("l2-percent", Math.round(l2Val*100) + "%");
+  setText("r2-percent", Math.round(r2Val*100) + "%");
+  const l2bar = document.getElementById("l2-bar");
+  const r2bar = document.getElementById("r2-bar");
+  if(l2bar) l2bar.style.width = `${l2Val*100}%`;
+  if(r2bar) r2bar.style.width = `${r2Val*100}%`;
 }
+
 // ====== Analógicos ======
 function updateSticks(gp){
   drawStick("left-stick",  gp.axes[0], gp.axes[1]);
@@ -169,12 +193,12 @@ function drawStick(id, x, y){
   ctx.clearRect(0,0,W,H);
 
   // Deadzone e drift
-  const dz = parseFloat(document.getElementById("deadzone").value || "0.05");
-  const drift = parseFloat(document.getElementById("drift").value || "0");
+  const dz = parseFloat(document.getElementById("deadzone")?.value || "0.05");
+  const drift = parseFloat(document.getElementById("drift")?.value || "0");
   const ax = Math.abs(x) < dz ? 0 : x;
   const ay = Math.abs(y) < dz ? 0 : y + drift;
 
-  // Fundo do stick
+  // Fundo
   ctx.beginPath();
   ctx.arc(W/2, H/2, W/2 - 6, 0, Math.PI*2);
   ctx.strokeStyle = "#5af2f2";
@@ -198,7 +222,7 @@ function updateBattery(gp){
       el.textContent = "--%";
     }
   } catch {
-    el.textContent = "--%";
+    if (el) el.textContent = "--%";
   }
 }
 
@@ -210,30 +234,44 @@ const loadBtn = document.getElementById("load-profile");
 const exportBtn = document.getElementById("export-profile");
 const fileInput = document.getElementById("file-input");
 
-saveBtn.addEventListener("click", () => {
-  const profile = { deadzone: deadzone.value, drift: drift.value };
+saveBtn?.addEventListener("click", () => {
+  const profile = {
+    deadzone: deadzone?.value,
+    drift: drift?.value,
+    sensitivity: document.getElementById("sensitivitySlider")?.value,
+    triggerCurve: document.getElementById("triggerCurveSlider")?.value
+  };
   localStorage.setItem("controllerProfile", JSON.stringify(profile));
   alert("Perfil salvo!");
 });
 
-loadBtn.addEventListener("click", () => fileInput.click());
+loadBtn?.addEventListener("click", () => fileInput?.click());
 
-fileInput.addEventListener("change", (e) => {
+fileInput?.addEventListener("change", (e) => {
   const file = e.target.files[0];
   if(!file) return;
   const reader = new FileReader();
   reader.onload = (ev) => {
     try{
       const profile = JSON.parse(ev.target.result);
-      if(profile.deadzone) deadzone.value = profile.deadzone;
-      if(profile.drift) drift.value = profile.drift;
+      if(profile.deadzone && deadzone) deadzone.value = profile.deadzone;
+      if(profile.drift && drift) drift.value = profile.drift;
+      const sens = document.getElementById("sensitivitySlider");
+      const curva = document.getElementById("triggerCurveSlider");
+      if(profile.sensitivity && sens){ sens.value = profile.sensitivity; setText("sensitivityValue", sens.value); }
+      if(profile.triggerCurve && curva){ curva.value = profile.triggerCurve; setText("triggerCurveValue", curva.value); }
     }catch{}
   };
   reader.readAsText(file);
 });
 
-exportBtn.addEventListener("click", () => {
-  const profile = { deadzone: deadzone.value, drift: drift.value };
+exportBtn?.addEventListener("click", () => {
+  const profile = {
+    deadzone: deadzone?.value,
+    drift: drift?.value,
+    sensitivity: document.getElementById("sensitivitySlider")?.value,
+    triggerCurve: document.getElementById("triggerCurveSlider")?.value
+  };
   const blob = new Blob([JSON.stringify(profile)], { type:"application/json" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -241,42 +279,24 @@ exportBtn.addEventListener("click", () => {
   setTimeout(()=>URL.revokeObjectURL(url), 1000);
 });
 
-// ====== Menu Avançado ======
+// ====== Painel Avançado (guarda para não quebrar se remover) ======
 const toggleBtn = document.getElementById('toggleAdvanced');
 const advancedPanel = document.getElementById('advancedPanel');
-const driftValueDisplay = document.getElementById('driftValue');
-const deadzoneValueDisplay = document.getElementById('deadzoneValue');
+if(toggleBtn && advancedPanel){
+  toggleBtn.addEventListener('click', () => {
+    const isVisible = advancedPanel.style.display === 'block';
+    advancedPanel.style.display = isVisible ? 'none' : 'block';
+    toggleBtn.textContent = isVisible ? 'Avançado' : 'Básico';
+  });
+}
+
+// ====== UI: atualizar valores ao vivo + Reset ======
 const sensitivitySlider = document.getElementById('sensitivitySlider');
 const triggerCurveSlider = document.getElementById('triggerCurveSlider');
 const presetProfile = document.getElementById('presetProfile');
 
-toggleBtn.addEventListener('click', () => {
-  const isVisible = advancedPanel.style.display === 'block';
-  advancedPanel.style.display = isVisible ? 'none' : 'block';
-  toggleBtn.textContent = isVisible ? 'Avançado' : 'Básico';
-});
-
-// Atualização em tempo real
-function updateDashboard(){
-  driftValueDisplay.textContent = drift.value;
-  deadzoneValueDisplay.textContent = deadzone.value;
-  requestAnimationFrame(updateDashboard);
-}
-updateDashboard();
-
-// Sliders e presets
-sensitivitySlider.addEventListener('input', (e) => applySensitivity(e.target.value));
-triggerCurveSlider.addEventListener('input', (e) => applyTriggerCurve(e.target.value));
-presetProfile.addEventListener('change', (e) => applyPresetProfile(e.target.value));
-
-function applySensitivity(val){
-  console.log("Sensibilidade aplicada:", val);
-}
-
-function applyTriggerCurve(val){
-  console.log("Curva do gatilho aplicada:", val);
-}
-
+function applySensitivity(val){ console.log("Sensibilidade aplicada:", val); }
+function applyTriggerCurve(val){ console.log("Curva do gatilho aplicada:", val); }
 function applyPresetProfile(preset){
   console.log("Perfil selecionado:", preset);
   switch(preset){
@@ -285,3 +305,30 @@ function applyPresetProfile(preset){
     case 'fight': applySensitivity(7); applyTriggerCurve(50); break;
   }
 }
+
+// labels em tempo real
+sensitivitySlider?.addEventListener('input', (e) => {
+  setText('sensitivityValue', e.target.value);
+  applySensitivity(e.target.value);
+});
+triggerCurveSlider?.addEventListener('input', (e) => {
+  setText('triggerCurveValue', e.target.value);
+  applyTriggerCurve(e.target.value);
+});
+presetProfile?.addEventListener('change', (e) => applyPresetProfile(e.target.value));
+
+// exibir drift/deadzone continuamente
+function updateDashboard(){
+  if (drift) setText('driftValue', drift.value);
+  if (deadzone) setText('deadzoneValue', deadzone.value);
+  requestAnimationFrame(updateDashboard);
+}
+updateDashboard();
+
+// Reset para padrão
+document.getElementById('resetSettings')?.addEventListener('click', () => {
+  if(deadzone){ deadzone.value = "0.05"; setText('deadzoneValue', deadzone.value); }
+  if(drift){ drift.value = "0"; setText('driftValue', drift.value); }
+  if(sensitivitySlider){ sensitivitySlider.value = "5"; setText('sensitivityValue', "5"); applySensitivity(5); }
+  if(triggerCurveSlider){ triggerCurveSlider.value = "50"; setText('triggerCurveValue', "50"); applyTriggerCurve(50); }
+});
