@@ -328,8 +328,8 @@ input[type="range"]::-moz-range-thumb {
 
 /* ========== AJUSTES DE TAMANHO PARA COMPACTAR O CONTROLE ========== */
 /* Triggers um pouco maiores */
-.trigger-group .btn { width:72px; height:40px; font-size:0.95rem; }
-.trigger-bar { width: 88px; height:10px; }
+.trigger-group .btn { width:88px; height:55px; font-size:0.95rem; }
+.trigger-bar { width: 88px; height:12px; }
 
 /* D-Pad mais compacto */
 .dpad{
@@ -341,15 +341,15 @@ input[type="range"]::-moz-range-thumb {
 
 /* Botões de ação um pouco menores */
 .action-cluster{
-  grid-template-columns:60px 60px 60px;
-  grid-template-rows:60px 60px 60px;
+  grid-template-columns:50px 50px 50px;
+  grid-template-rows:50px 50px 50px;
   gap:10px;
 }
 .btn.round{ width:58px; height:58px; font-size:1.05rem; }
 
 /* Analógicos mais enxutos visualmente sem mudar o canvas lógico */
 .stick-left, .stick-right{ transform:none; }
-canvas{ width:120px; height:120px; } /* escala css, mantém resolução do desenho */
+canvas{ width:110px; height:110px; } /* escala css, mantém resolução do desenho */
 
 /* Centro — PS e Mic menores que Touch e que os botões de ação */
 #ps, #mic{ font-size:0.8rem; padding:.3rem .55rem; }
