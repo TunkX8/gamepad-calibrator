@@ -1,19 +1,21 @@
-// ====== Conexão ======
+// ====== Estado inicial ======
 let currentProfile = "ps"; // ps | xbox | switch | generic
+let loopStarted = false;
 
+// ====== Conexão ======
 window.addEventListener("gamepadconnected", (e) => {
   const gp = navigator.getGamepads()[e.gamepad.index];
   document.getElementById("connection-status").textContent = `Conectado: ${gp.id}`;
   currentProfile = detectProfile(gp.id);
   applyLabels(currentProfile);
-  loop();
+  startLoopOnce();
 });
 
 window.addEventListener("gamepaddisconnected", () => {
   document.getElementById("connection-status").textContent = "Aguardando controle...";
 });
 
-// ====== Detecta tipo (rótulos/mapeamento) ======
+// ====== Detecta tipo ======
 function detectProfile(id = "") {
   const s = id.toLowerCase();
   if (s.includes("xbox")) return "xbox";
@@ -23,32 +25,38 @@ function detectProfile(id = "") {
 }
 
 function applyLabels(profile) {
-  const tri = document.getElementById("btn-triangle");
-  const cir = document.getElementById("btn-circle");
-  const cro = document.getElementById("btn-cross");
-  const sqr = document.getElementById("btn-square");
-  const share = document.getElementById("share");
-  const options = document.getElementById("options");
-  const touch = document.getElementById("touch");
-  const ps = document.getElementById("ps");
-  const mic = document.getElementById("mic");
+  const labels = {
+    tri: "btn-triangle",
+    cir: "btn-circle",
+    cro: "btn-cross",
+    sqr: "btn-square",
+    share: "share",
+    options: "options",
+    touch: "touch",
+    ps: "ps",
+    mic: "mic"
+  };
+  const el = {};
+  for (const key in labels) {
+    el[key] = document.getElementById(labels[key]);
+  }
 
   if (profile === "xbox") {
-    tri.textContent = "Y"; cir.textContent = "B"; cro.textContent = "A"; sqr.textContent = "X";
-    share.textContent = "View"; options.textContent = "Menu"; touch.textContent = "Xbox"; ps.textContent = "Guide";
-    mic.style.display = "none";
+    el.tri.textContent = "Y"; el.cir.textContent = "B"; el.cro.textContent = "A"; el.sqr.textContent = "X";
+    el.share.textContent = "View"; el.options.textContent = "Menu"; el.touch.textContent = "Xbox"; el.ps.textContent = "Guide";
+    el.mic.style.display = "none";
   } else if (profile === "switch") {
-    tri.textContent = "X"; cir.textContent = "A"; cro.textContent = "B"; sqr.textContent = "Y";
-    share.textContent = "−"; options.textContent = "+"; touch.textContent = "Home"; ps.textContent = "Capture";
-    mic.style.display = "none";
+    el.tri.textContent = "X"; el.cir.textContent = "A"; el.cro.textContent = "B"; el.sqr.textContent = "Y";
+    el.share.textContent = "−"; el.options.textContent = "+"; el.touch.textContent = "Home"; el.ps.textContent = "Capture";
+    el.mic.style.display = "none";
   } else {
-    tri.textContent = "△"; cir.textContent = "◯"; cro.textContent = "✕"; sqr.textContent = "□";
-    share.textContent = "Share"; options.textContent = "Options"; touch.textContent = "Touch"; ps.textContent = "PS";
-    mic.style.display = ""; // visível
+    el.tri.textContent = "△"; el.cir.textContent = "◯"; el.cro.textContent = "✕"; el.sqr.textContent = "□";
+    el.share.textContent = "Share"; el.options.textContent = "Options"; el.touch.textContent = "Touch"; el.ps.textContent = "PS";
+    el.mic.style.display = "";
   }
 }
 
-// ====== Mapeamento por perfil (índices) ======
+// ====== Mapeamento por perfil ======
 function mappingFor(profile) {
   return {
     l1: 4, r1: 5, l2: 6, r2: 7, l3: 10, r3: 11,
@@ -60,6 +68,13 @@ function mappingFor(profile) {
 }
 
 // ====== Loop principal ======
+function startLoopOnce() {
+  if (!loopStarted) {
+    loopStarted = true;
+    loop();
+  }
+}
+
 function loop() {
   const gp = navigator.getGamepads()[0];
   if (gp) {
@@ -89,15 +104,20 @@ function updateButtons(gp, map) {
   ["l1","r1","l2","r2","l3","r3"].forEach(id => setActive(id, pressed(gp.buttons[map[id]])));
   ["share","options","ps","touch"].forEach(id => setActive(id, pressed(gp.buttons[map[id]])));
   setActive("mic", map.mic !== null && gp.buttons[map.mic] ? pressed(gp.buttons[map.mic]) : false);
-  ["dpad-up","dpad-down","dpad-left","dpad-right"].forEach(id => setActive(id, pressed(gp.buttons[map.dpad[id.split('-')[1]]])));
-  ["btn-square","btn-cross","btn-circle","btn-triangle"].forEach(id => setActive(id, pressed(gp.buttons[map.actions[id.split('-')[1]]])));
+  ["dpad-up","dpad-down","dpad-left","dpad-right"].forEach(id => {
+    const dir = id.split('-')[1];
+    setActive(id, pressed(gp.buttons[map.dpad[dir]]));
+  });
+  ["btn-square","btn-cross","btn-circle","btn-triangle"].forEach(id => {
+    const act = id.split('-')[1];
+    setActive(id, pressed(gp.buttons[map.actions[act]]));
+  });
 }
 
-// ====== Atualiza triggers com porcentagem ======
+// ====== Triggers com curva ======
 function applyTriggerCurveValue(value, curvePercent){
-  // curvePercent = 0-100 (linear -> mais responsivo)
-  const t = curvePercent/100;
-  return Math.pow(value, 1/(1-t+0.01)); // adiciona 0.01 para evitar divisão por zero
+  const t = curvePercent / 100;
+  return Math.pow(value, 1 / (1 - t + 0.01));
 }
 
 function updateTriggersPercent(gp, map) {
@@ -105,10 +125,10 @@ function updateTriggersPercent(gp, map) {
   const l2Val = applyTriggerCurveValue(gp.buttons[map.l2]?.value || 0, curve);
   const r2Val = applyTriggerCurveValue(gp.buttons[map.r2]?.value || 0, curve);
 
-  document.getElementById("l2-percent").textContent = Math.round(l2Val*100) + "%";
-  document.getElementById("r2-percent").textContent = Math.round(r2Val*100) + "%";
-  document.getElementById("l2-bar").style.width = `${l2Val*100}%`;
-  document.getElementById("r2-bar").style.width = `${r2Val*100}%`;
+  document.getElementById("l2-percent").textContent = Math.round(l2Val * 100) + "%";
+  document.getElementById("r2-percent").textContent = Math.round(r2Val * 100) + "%";
+  document.getElementById("l2-bar").style.width = `${l2Val * 100}%`;
+  document.getElementById("r2-bar").style.width = `${r2Val * 100}%`;
 }
 
 // ====== Analógicos ======
@@ -119,10 +139,10 @@ function updateSticks(gp){
 
 function drawStick(id, x, y){
   const c = document.getElementById(id);
-  if(!c) return;
+  if (!c) return;
   const ctx = c.getContext("2d");
   const W = c.width, H = c.height;
-  ctx.clearRect(0,0,W,H);
+  ctx.clearRect(0, 0, W, H);
 
   const dz = parseFloat(document.getElementById("deadzone").value || "0.05");
   const drift = parseFloat(document.getElementById("drift").value || "0");
@@ -130,13 +150,13 @@ function drawStick(id, x, y){
   const ay = Math.abs(y) < dz ? 0 : y + drift;
 
   ctx.beginPath();
-  ctx.arc(W/2, H/2, W/2 - 6, 0, Math.PI*2);
+  ctx.arc(W/2, H/2, W/2 - 6, 0, Math.PI * 2);
   ctx.strokeStyle = "#5af2f2";
   ctx.lineWidth = 3;
   ctx.stroke();
 
   ctx.beginPath();
-  ctx.arc(W/2 + ax*(W/2 - 12), H/2 + ay*(H/2 - 12), 10, 0, Math.PI*2);
+  ctx.arc(W/2 + ax * (W/2 - 12), H/2 + ay * (H/2 - 12), 10, 0, Math.PI * 2);
   ctx.fillStyle = "#3ae03a";
   ctx.fill();
 }
@@ -144,12 +164,16 @@ function drawStick(id, x, y){
 // ====== Bateria ======
 function updateBattery(gp){
   const el = document.getElementById("battery-level");
-  try{
-    el.textContent = (gp && gp.battery && typeof gp.battery.level === "number") ? Math.round(gp.battery.level*100)+"%" : "--%";
-  }catch{ el.textContent="--%"; }
+  try {
+    el.textContent = (gp && gp.battery && typeof gp.battery.level === "number")
+      ? Math.round(gp.battery.level * 100) + "%"
+      : "--%";
+  } catch {
+    el.textContent = "--%";
+  }
 }
 
-// ====== Perfis (Salvar/Importar/Exportar) ======
+// ====== Perfis ======
 const deadzone = document.getElementById("deadzone");
 const drift = document.getElementById("drift");
 const saveBtn = document.getElementById("save-profile");
@@ -169,80 +193,4 @@ saveBtn.addEventListener("click", () => {
     triggerCurve: triggerCurveSlider.value,
     preset: presetProfile.value
   };
-  localStorage.setItem("controllerProfile", JSON.stringify(profile));
-  alert("Perfil salvo!");
-});
-
-loadBtn.addEventListener("click", () => fileInput.click());
-
-fileInput.addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = (ev) => {
-    try{
-      const profile = JSON.parse(ev.target.result);
-      if(profile.deadzone) deadzone.value = profile.deadzone;
-      if(profile.drift) drift.value = profile.drift;
-      if(profile.sensitivity) sensitivitySlider.value = profile.sensitivity;
-      if(profile.triggerCurve) triggerCurveSlider.value = profile.triggerCurve;
-      if(profile.preset) presetProfile.value = profile.preset;
-    }catch{}
-  };
-  reader.readAsText(file);
-});
-
-exportBtn.addEventListener("click", () => {
-  const profile = {
-    deadzone: deadzone.value,
-    drift: drift.value,
-    sensitivity: sensitivitySlider.value,
-    triggerCurve: triggerCurveSlider.value,
-    preset: presetProfile.value
-  };
-  const blob = new Blob([JSON.stringify(profile)], { type:"application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url; a.download = "profile.json"; a.click();
-  setTimeout(()=>URL.revokeObjectURL(url), 1000);
-});
-
-// ====== Reset ======
-resetBtn.addEventListener("click", () => {
-  deadzone.value = "0.05";
-  drift.value = "0";
-  sensitivitySlider.value = "5";
-  triggerCurveSlider.value = "50";
-  presetProfile.value = "default";
-});
-
-// ====== Menu Avançado ======
-const toggleBtn = document.getElementById('toggleAdvanced');
-const advancedPanel = document.getElementById('advancedPanel');
-toggleBtn.addEventListener('click', () => {
-  const isVisible = advancedPanel.style.display === 'block';
-  advancedPanel.style.display = isVisible ? 'none' : 'block';
-  toggleBtn.textContent = isVisible ? 'Avançado' : 'Básico';
-});
-
-// ====== Atualização em tempo real ======
-function updateDashboard() {
-  document.getElementById('driftValue').textContent = drift.value;
-  document.getElementById('deadzoneValue').textContent = deadzone.value;
-  document.getElementById('sensitivityValue').textContent = sensitivitySlider.value;
-  document.getElementById('triggerCurveValue').textContent = triggerCurveSlider.value;
-  requestAnimationFrame(updateDashboard);
-}
-updateDashboard();
-
-// ====== Presets ======
-presetProfile.addEventListener('change', (e) => applyPresetProfile(e.target.value));
-
-function applyPresetProfile(preset){
-  switch(preset){
-    case 'fps': deadzone.value="0.05"; drift.value="0"; sensitivitySlider.value="8"; triggerCurveSlider.value="60"; break;
-    case 'racing': deadzone.value="0.08"; drift.value="0"; sensitivitySlider.value="5"; triggerCurveSlider.value="30"; break;
-    case 'fight': deadzone.value="0.05"; drift.value="0"; sensitivitySlider.value="7"; triggerCurveSlider.value="50"; break;
-    default: deadzone.value="0.05"; drift.value="0"; sensitivitySlider.value="5"; triggerCurveSlider.value="50"; break;
-  }
-}
+ 

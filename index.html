@@ -12,11 +12,9 @@
     <div class="header-buttons">
       <a class="donate-btn" target="_blank"
          href="https://www.paypal.com/donate/?hosted_button_id=KCEK7FJ3H36TL">💖 Apoie o Projeto</a>
-    
     </div>
   </header>
 
-  <!-- Painel de status atualizado -->
   <section class="status-panel">
     <div class="status-item"><strong>Conexão:</strong> <span id="connection-status">Aguardando controle...</span></div>
     <div class="status-item"><strong>Bateria:</strong> <span id="battery-level">--%</span></div>
@@ -24,31 +22,29 @@
     <div class="status-item"><strong>Perfil:</strong> <span id="profile-name">Padrão</span></div>
   </section>
 
-  <!-- GRID PRINCIPAL — 3 colunas (esq/centro/dir) x 3 linhas (topo/meio/baixo) -->
   <main class="main-layout">
-    <!-- Área do controle -->
     <section class="controller-wrap">
       <div class="controller-grid">
-        <!-- Topo: L1 L2 | R1 R2 -->
-        <div class="top-left trigger-group">
+        <!-- Triggers -->
+        <div class="trigger-group left">
           <div id="l1" class="btn pill">L1</div>
           <div id="l2" class="btn pill">L2</div>
-          <div class="trigger-container">
+          <div class="trigger-bar-wrap">
             <div class="trigger-bar"><div id="l2-bar"></div></div>
             <span id="l2-percent">0%</span>
           </div>
         </div>
-        <div class="top-right trigger-group">
+        <div class="trigger-group right">
           <div id="r1" class="btn pill">R1</div>
           <div id="r2" class="btn pill">R2</div>
-          <div class="trigger-container">
+          <div class="trigger-bar-wrap">
             <div class="trigger-bar"><div id="r2-bar"></div></div>
             <span id="r2-percent">0%</span>
           </div>
         </div>
 
         <!-- D-Pad -->
-        <div class="dpad" aria-label="D-Pad">
+        <div class="dpad">
           <div id="dpad-up"    class="btn dpad-key">▲</div>
           <div id="dpad-left"  class="btn dpad-key">◀</div>
           <div id="dpad-right" class="btn dpad-key">▶</div>
@@ -57,19 +53,16 @@
 
         <!-- Centro -->
         <div class="center-cluster">
-          <div class="center-row">
-            <div id="share"   class="btn pill">Share</div>
-            <div class="touch-ps">
-              <div id="touch" class="btn pill">Touch</div>
-              <div id="ps"    class="btn pill small">PS</div>
-              <div id="mic"   class="btn pill small">Mic</div>
-            </div>
-            <div id="options" class="btn pill">Options</div>
+          <div id="share" class="btn pill">Share</div>
+          <div class="touch-ps">
+            <div id="touch" class="btn pill">Touch</div>
+            <div id="ps" class="btn pill small">PS</div>
+            <div id="mic" class="btn pill small">Mic</div>
           </div>
+          <div id="options" class="btn pill">Options</div>
         </div>
-
-        <!-- Botões de ação -->
-        <div class="action-cluster" aria-label="Ação">
+                <!-- Botões de ação -->
+        <div class="action-cluster">
           <div id="btn-triangle" class="btn round">△</div>
           <div id="btn-circle"   class="btn round">◯</div>
           <div id="btn-cross"    class="btn round">✕</div>
@@ -77,18 +70,17 @@
         </div>
 
         <!-- Analógicos -->
-        <div class="stick-left">
+        <div class="stick-group left">
           <canvas id="left-stick" width="140" height="140"></canvas>
           <div id="l3" class="btn pill">L3</div>
         </div>
-        <div class="stick-right">
+        <div class="stick-group right">
           <canvas id="right-stick" width="140" height="140"></canvas>
           <div id="r3" class="btn pill">R3</div>
         </div>
       </div>
     </section>
 
-    <!-- Lateral direita: Configurações -->
     <aside class="sidebar">
       <h2>Configurações</h2>
 
