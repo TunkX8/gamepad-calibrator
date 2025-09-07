@@ -55,7 +55,7 @@ function mappingFor(profile) {
     share: 8, options: 9, ps: 16, touch: 17,
     dpad: { up: 12, down: 13, left: 14, right: 15 },
     actions: { cross: 0, circle: 1, square: 2, triangle: 3 },
-    mic: null
+    mic: 18 // nem todos os controles têm esse botão
   };
 }
 
@@ -87,8 +87,7 @@ function pressed(btn) {
 // ====== Atualiza botões ======
 function updateButtons(gp, map) {
   ["l1","r1","l2","r2","l3","r3"].forEach(id => setActive(id, pressed(gp.buttons[map[id]])));
-  ["share","options","ps","touch"].forEach(id => setActive(id, pressed(gp.buttons[map[id]])));
-  setActive("mic", map.mic !== null && gp.buttons[map.mic] ? pressed(gp.buttons[map.mic]) : false);
+  ["share","options","ps","touch","mic"].forEach(id => setActive(id, pressed(gp.buttons[map[id]])));
   ["dpad-up","dpad-down","dpad-left","dpad-right"].forEach(id => setActive(id, pressed(gp.buttons[map.dpad[id.split('-')[1]]])));
   ["btn-square","btn-cross","btn-circle","btn-triangle"].forEach(id => setActive(id, pressed(gp.buttons[map.actions[id.split('-')[1]]])));
 }
