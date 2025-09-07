@@ -24,13 +24,7 @@ header{
 }
 header h1{ color:var(--c-neon); font-size:1.45rem; display:flex; gap:.5rem; align-items:center; }
 .header-buttons { display:flex; gap:10px; align-items:center; }
-.advanced-btn{
-  padding:8px 16px; cursor:pointer; font-weight:bold;
-  background-color:#444; color:#fff;
-  border:2px solid var(--c-neon); border-radius:6px;
-  transition: all 0.2s;
-}
-.advanced-btn:hover { background-color:var(--c-neon); color:#222; }
+
 .donate-btn{
   background:linear-gradient(90deg,var(--c-neon),var(--c-accent));
   color:#111; padding:.55rem 1rem; border-radius:12px; text-decoration:none; font-weight:700;
