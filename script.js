@@ -1,26 +1,17 @@
 let currentProfile = "ps";
-let loopStarted = false;
+let layoutApplied = false;
 
-// ====== Conexão ======
-window.addEventListener("gamepadconnected", (e) => {
-  const gp = navigator.getGamepads()[e.gamepad.index];
-  document.getElementById("connection-status").textContent = `Conectado: ${gp.id}`;
-  currentProfile = detectProfile(gp.id);
-  applyLabels(currentProfile);
-  startLoopOnce();
-});
-
-window.addEventListener("gamepaddisconnected", () => {
-  document.getElementById("connection-status").textContent = "Aguardando controle...";
-});
-
-// ====== Detecta tipo ======
 function detectProfile(id = "") {
   const s = id.toLowerCase();
   if (s.includes("xbox")) return "xbox";
   if (s.includes("dualsense") || s.includes("dualshock") || s.includes("wireless controller")) return "ps";
   if (s.includes("nintendo") || s.includes("switch") || s.includes("pro controller")) return "switch";
   return "generic";
+}
+
+function applyLayout(profile) {
+  document.body.classList.remove("layout-ps", "layout-xbox", "layout-switch");
+  document.body.classList.add(`layout-${profile}`);
 }
 
 function applyLabels(profile) {
@@ -57,7 +48,36 @@ function applyLabels(profile) {
   document.getElementById("profile-name").textContent = profile.toUpperCase();
 }
 
-// ====== Mapeamento por perfil ======
+function loop() {
+  const gamepads = navigator.getGamepads?.() || [];
+  const gp = gamepads[0];
+
+  if (gp) {
+    document.getElementById("connection-status").textContent = `Conectado: ${gp.id}`;
+    if (!layoutApplied) {
+      currentProfile = detectProfile(gp.id);
+      applyLabels(currentProfile);
+      applyLayout(currentProfile);
+      layoutApplied = true;
+    }
+
+    const map = mappingFor(currentProfile);
+    updateButtons(gp, map);
+    updateSticks(gp);
+    updateTriggersPercent(gp, map);
+    updateBattery(gp);
+  } else {
+    document.getElementById("connection-status").textContent = "Aguardando controle...";
+    layoutApplied = false;
+  }
+
+  requestAnimationFrame(loop);
+}
+
+window.addEventListener("load", () => {
+  loop(); // inicia o loop assim que a página carrega
+});
+
 function mappingFor(profile) {
   return {
     l1: 4, r1: 5, l2: 6, r2: 7, l3: 10, r3: 11,
@@ -68,27 +88,6 @@ function mappingFor(profile) {
   };
 }
 
-// ====== Loop principal ======
-function startLoopOnce() {
-  if (!loopStarted) {
-    loopStarted = true;
-    loop();
-  }
-}
-
-function loop() {
-  const gp = navigator.getGamepads()[0];
-  if (gp) {
-    const map = mappingFor(currentProfile);
-    updateButtons(gp, map);
-    updateSticks(gp);
-    updateTriggersPercent(gp, map);
-    updateBattery(gp);
-  }
-  requestAnimationFrame(loop);
-}
-
-// ====== Visualização ======
 function setActive(id, on) {
   const el = document.getElementById(id);
   if (!el) return;
@@ -96,8 +95,7 @@ function setActive(id, on) {
 }
 
 function pressed(btn) {
-  if (!btn) return false;
-  return btn.pressed || btn.value > 0.05;
+  return btn?.pressed || btn?.value > 0.05;
 }
 
 function updateButtons(gp, map) {
@@ -113,6 +111,7 @@ function updateButtons(gp, map) {
     setActive(id, pressed(gp.buttons[map.actions[act]]));
   });
 }
+
 function applyTriggerCurveValue(value, curvePercent){
   const t = curvePercent / 100;
   return Math.pow(value, 1 / (1 - t + 0.01));
@@ -168,8 +167,7 @@ function updateBattery(gp){
     el.textContent = "--%";
   }
 }
-
-// ====== Perfis e configurações ======
+// ===== Perfis e configurações =====
 const deadzone = document.getElementById("deadzone");
 const drift = document.getElementById("drift");
 const saveBtn = document.getElementById("save-profile");
@@ -207,7 +205,9 @@ fileInput.addEventListener("change", (e) => {
       if (profile.sensitivity) sensitivitySlider.value = profile.sensitivity;
       if (profile.triggerCurve) triggerCurveSlider.value = profile.triggerCurve;
       if (profile.preset) presetProfile.value = profile.preset;
-    } catch {}
+    } catch {
+      alert("Erro ao carregar perfil.");
+    }
   };
   reader.readAsText(file);
 });

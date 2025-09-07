@@ -9,46 +9,40 @@
 <body>
   <header class="header-container">
     <h1>🎮 Calibrador de Controle</h1>
-    <div class="header-buttons">
-      <a class="donate-btn" target="_blank"
-         href="https://www.paypal.com/donate/?hosted_button_id=KCEK7FJ3H36TL">💖 Apoie o Projeto</a>
-    </div>
+    <a class="donate-btn" target="_blank"
+       href="https://www.paypal.com/donate/?hosted_button_id=KCEK7FJ3H36TL">💖 Apoie o Projeto</a>
   </header>
 
   <section class="status-panel">
-    <div class="status-item"><strong>Conexão:</strong> <span id="connection-status">Aguardando controle...</span></div>
-    <div class="status-item"><strong>Bateria:</strong> <span id="battery-level">--%</span></div>
-    <div class="status-item"><strong>Tipo:</strong> <span id="connection-type">USB</span></div>
-    <div class="status-item"><strong>Perfil:</strong> <span id="profile-name">Padrão</span></div>
+    <div><strong>Conexão:</strong> <span id="connection-status">Aguardando controle...</span></div>
+    <div><strong>Bateria:</strong> <span id="battery-level">--%</span></div>
+    <div><strong>Tipo:</strong> <span id="connection-type">USB</span></div>
+    <div><strong>Perfil:</strong> <span id="profile-name">Padrão</span></div>
   </section>
 
   <main class="main-layout">
-    <section class="controller-wrap">
+    <section class="controller-area">
       <div class="controller-grid">
         <!-- Triggers -->
-        <div class="trigger-group left">
+        <div class="trigger-group">
           <div id="l1" class="btn pill">L1</div>
           <div id="l2" class="btn pill">L2</div>
-          <div class="trigger-bar-wrap">
-            <div class="trigger-bar"><div id="l2-bar"></div></div>
-            <span id="l2-percent">0%</span>
-          </div>
+          <div class="trigger-bar"><div id="l2-bar"></div></div>
+          <span id="l2-percent">0%</span>
         </div>
-        <div class="trigger-group right">
+        <div class="trigger-group">
           <div id="r1" class="btn pill">R1</div>
           <div id="r2" class="btn pill">R2</div>
-          <div class="trigger-bar-wrap">
-            <div class="trigger-bar"><div id="r2-bar"></div></div>
-            <span id="r2-percent">0%</span>
-          </div>
+          <div class="trigger-bar"><div id="r2-bar"></div></div>
+          <span id="r2-percent">0%</span>
         </div>
 
         <!-- D-Pad -->
         <div class="dpad">
-          <div id="dpad-up"    class="btn dpad-key">▲</div>
-          <div id="dpad-left"  class="btn dpad-key">◀</div>
+          <div id="dpad-up" class="btn dpad-key">▲</div>
+          <div id="dpad-left" class="btn dpad-key">◀</div>
           <div id="dpad-right" class="btn dpad-key">▶</div>
-          <div id="dpad-down"  class="btn dpad-key">▼</div>
+          <div id="dpad-down" class="btn dpad-key">▼</div>
         </div>
 
         <!-- Centro -->
@@ -61,20 +55,21 @@
           </div>
           <div id="options" class="btn pill">Options</div>
         </div>
-                <!-- Botões de ação -->
+
+        <!-- Botões de ação -->
         <div class="action-cluster">
           <div id="btn-triangle" class="btn round">△</div>
-          <div id="btn-circle"   class="btn round">◯</div>
-          <div id="btn-cross"    class="btn round">✕</div>
-          <div id="btn-square"   class="btn round">□</div>
+          <div id="btn-circle" class="btn round">◯</div>
+          <div id="btn-cross" class="btn round">✕</div>
+          <div id="btn-square" class="btn round">□</div>
         </div>
 
         <!-- Analógicos -->
-        <div class="stick-group left">
+        <div class="stick-group">
           <canvas id="left-stick" width="140" height="140"></canvas>
           <div id="l3" class="btn pill">L3</div>
         </div>
-        <div class="stick-group right">
+        <div class="stick-group">
           <canvas id="right-stick" width="140" height="140"></canvas>
           <div id="r3" class="btn pill">R3</div>
         </div>
