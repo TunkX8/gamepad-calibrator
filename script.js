@@ -55,7 +55,7 @@ function mappingFor(profile) {
     share: 8, options: 9, ps: 16, touch: 17,
     dpad: { up: 12, down: 13, left: 14, right: 15 },
     actions: { cross: 0, circle: 1, square: 2, triangle: 3 },
-    mic: 18 // nem todos os controles têm esse botão
+    mic: null
   };
 }
 
