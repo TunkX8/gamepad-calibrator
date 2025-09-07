@@ -361,3 +361,21 @@ canvas{ width:120px; height:120px; } /* escala css, mantém resolução do desen
   }
   .sidebar{ position:static; }
 }
+.battery-btn {
+  margin-top: 6px;
+  padding: 8px 14px;
+  background-color: #1a1a1a;
+  color: var(--c-neon);
+  border: 2px solid var(--c-neon);
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(90,242,242,.25);
+  transition: all 0.2s ease;
+}
+
+.battery-btn:hover {
+  background-color: var(--c-accent);
+  color: #111;
+  box-shadow: 0 0 14px var(--c-accent);
+}
