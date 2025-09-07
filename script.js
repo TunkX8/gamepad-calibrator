@@ -87,7 +87,8 @@ function pressed(btn) {
 // ====== Atualiza botões ======
 function updateButtons(gp, map) {
   ["l1","r1","l2","r2","l3","r3"].forEach(id => setActive(id, pressed(gp.buttons[map[id]])));
-  ["share","options","ps","touch","mic"].forEach(id => setActive(id, pressed(gp.buttons[map[id]])));
+  ["share","options","ps","touch"].forEach(id => setActive(id, pressed(gp.buttons[map[id]])));
+  setActive("mic", map.mic !== null && gp.buttons[map.mic] ? pressed(gp.buttons[map.mic]) : false);
   ["dpad-up","dpad-down","dpad-left","dpad-right"].forEach(id => setActive(id, pressed(gp.buttons[map.dpad[id.split('-')[1]]])));
   ["btn-square","btn-cross","btn-circle","btn-triangle"].forEach(id => setActive(id, pressed(gp.buttons[map.actions[id.split('-')[1]]])));
 }
