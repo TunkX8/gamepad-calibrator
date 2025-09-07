@@ -246,22 +246,3 @@ function applyPresetProfile(preset){
     default: deadzone.value="0.05"; drift.value="0"; sensitivitySlider.value="5"; triggerCurveSlider.value="50"; break;
   }
 }
-// 🔋 Sessão: Leitura de Bateria via Web Bluetooth
-async function getBatteryLevel() {
-  try {
-    const device = await navigator.bluetooth.requestDevice({
-      filters: [{ services: ['battery_service'] }]
-    });
-
-    const server = await device.gatt.connect();
-    const service = await server.getPrimaryService('battery_service');
-    const characteristic = await service.getCharacteristic('battery_level');
-    const value = await characteristic.readValue();
-    const batteryLevel = value.getUint8(0);
-
-    document.getElementById("battery-level").textContent = batteryLevel + "%";
-  } catch (error) {
-    console.error("Erro ao ler bateria:", error);
-    document.getElementById("battery-level").textContent = "--%";
-  }
-}
